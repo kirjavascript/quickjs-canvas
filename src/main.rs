@@ -4,26 +4,18 @@ use quick_js::{Context, JsValue, console::Level};
 
 use canvas::Canvas;
 
-use std::collectio::HashMap;
-use std::sync::Mutex;
-// use std::cell::RefCell;
-// use std::rc::Rc;
+use std::collections::HashMap;
+use std::sync::{Arc, Mutex};
 
-// #[macro_export]
-// macro_rules! clone {
-//     ( $( $x:ident ),* => $y:expr ) => {
-//         {
-//             $(let $x = $x.clone();)*
-//             $y
-//         }
-//     };
-//     ( $x:ident $y:expr ) => {
-//         {
-//             let $x = $x.clone();
-//             $y
-//         }
-//     };
-// }
+#[macro_export]
+macro_rules! clone {
+    ( $( $x:ident ),* => $y:expr ) => {
+        {
+            $(let $x = $x.clone();)*
+            $y
+        }
+    };
+}
 
 fn main() {
     let context = Context::builder()
@@ -41,21 +33,14 @@ fn main() {
 
     eval(include_str!("./js/prelude.js"));
 
-    // let canvases: Rc<RefCell<HashMap<i32, Canvas>>> = Rc::new(
-    //     RefCell::new(HashMap::new())
-    // );
+    let canvases = Arc::new(Mutex::new(HashMap::new()));
 
-    // context.add_callback("QJSC_initCanvas", clone!(canvases => |id: i32| {
-    //     canvases.borrow_mut().insert(id, Canvas::new());
-    //     0
-    // })).unwrap();
-
-    let mut canvases: HashMap<i32, Canvas> = HashMap::new();
-
-    context.add_callback("QJSC_initCanvas", |id: i32| {
-        canvases.insert(id, Canvas::new());
-        0
-    }).unwrap();
+    context.add_callback("QJSC_initCanvas", clone!(canvases =>
+        move |id: i32| {
+            canvases.lock().unwrap().insert(id, Canvas::new());
+            0
+        }
+     )).unwrap();
 
 
 
@@ -80,7 +65,7 @@ fn main() {
 // use sdl2::video::GLProfile;
 
 
-// fn main() {
+// fn _main() {
 //     // Set up SDL2.
 //     let sdl_context = sdl2::init().unwrap();
 //     let video = sdl_context.video().unwrap();
