@@ -8,4 +8,13 @@ edition = "2018"
 
 [dependencies]
 quick-js = "0.3.6"
+pathfinder_canvas = { version = "0.5.0", features = ["pf-text"] }
+pathfinder_color = { version = "0.5.0" }
+pathfinder_content = { version = "0.5.0" }
+pathfinder_geometry = { version = "0.5.0" }
+pathfinder_gl = { version = "0.5.0" }
+pathfinder_gpu = { version = "0.5.0" }
+pathfinder_renderer = { version = "0.5.0" }
+pathfinder_resources = { version = "0.5.0" }
+gl = "0.14"
 sdl2 = "0.34.3"
