@@ -23,6 +23,8 @@
             return new CanvasRenderingContext2D(this.id);
         };
 
+        getWindow = () => new Window(this.id);
+
         #width = 300;
         #height = 150;
 
@@ -41,6 +43,9 @@
     // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
 
     class CanvasRenderingContext2D {
+    }
+
+    class Window {
     }
 
     Object.assign(globalThis, {
