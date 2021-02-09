@@ -58,17 +58,21 @@ fn main() {
 
     eval(include_str!("../demo.js")); // TODO: replace with user supplied code
 
+        for (_, canvas) in canvases.lock().unwrap().iter_mut() {
+            // canvas.test();
+            canvas.render();
+        }
+
+
     // event loop
 
     let mut event_pump = sdl_context.event_pump().unwrap();
     loop {
+
         match event_pump.wait_event() { // TODO: poll_iter
             Event::Quit {..} | Event::KeyDown { keycode: Some(Keycode::Escape), .. } => return,
             Event::Window { win_event: WindowEvent::Exposed, .. } => {
 
-        for (_, canvas) in canvases.lock().unwrap().iter_mut() {
-            canvas.render();
-        }
 
             },
             _ => {}
