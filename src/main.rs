@@ -62,12 +62,17 @@ fn main() {
 
     let mut event_pump = sdl_context.event_pump().unwrap();
     loop {
-        match event_pump.wait_event() {
+        match event_pump.wait_event() { // TODO: poll_iter
             Event::Quit {..} | Event::KeyDown { keycode: Some(Keycode::Escape), .. } => return,
             Event::Window { win_event: WindowEvent::Exposed, .. } => {
 
+
             },
             _ => {}
+        }
+
+        for (_, canvas) in canvases.lock().unwrap().iter() {
+            canvas.render();
         }
 
         // TODO: framerate limiting
