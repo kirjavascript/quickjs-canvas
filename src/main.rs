@@ -1,23 +1,18 @@
 mod canvas;
+mod clone;
 
-use quick_js::{Context, JsValue, console::Level};
-
-use canvas::Canvas;
+use canvas::CanvasWindow;
 
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
 
-#[macro_export]
-macro_rules! clone {
-    ( $( $x:ident ),* => $y:expr ) => {
-        {
-            $(let $x = $x.clone();)*
-            $y
-        }
-    };
-}
+use quick_js::{Context, JsValue, console::Level};
+use sdl2::event::{Event, WindowEvent};
+use sdl2::keyboard::Keycode;
+use sdl2::video::GLProfile;
 
 fn main() {
+    // create JS env
     let context = Context::builder()
         .console(|level: Level, args: Vec<JsValue>| {
             eprintln!("{}: {:?}", level, args);
@@ -33,36 +28,53 @@ fn main() {
 
     eval(include_str!("./js/prelude.js"));
 
+    // setup UI
+
+    let sdl_context = sdl2::init().unwrap();
+    let video = sdl_context.video().unwrap();
+
+    // Make sure we have at least a GL 3.0 context. Pathfinder requires this.
+    let gl_attributes = video.gl_attr();
+    gl_attributes.set_context_profile(GLProfile::Core);
+    gl_attributes.set_context_version(3, 3);
+
+    // stick video in a mutex so canvas can access it
+
+    let video = Arc::new(Mutex::new(video));
+
+    // attach QJSC controls to context
+
     let canvases = Arc::new(Mutex::new(HashMap::new()));
 
     context.add_callback("QJSC_initCanvas", clone!(canvases =>
         move |id: i32| {
-            canvases.lock().unwrap().insert(id, Canvas::new());
+            let video = video.lock().unwrap();
+            canvases.lock().unwrap().insert(id, CanvasWindow::new(&video));
             0
         }
      )).unwrap();
 
+    // load initial user code
 
+    eval(include_str!("../demo.js")); // TODO: replace with user supplied code
 
+    // event loop
 
+    let mut event_pump = sdl_context.event_pump().unwrap();
+    loop {
+        match event_pump.wait_event() {
+            Event::Quit {..} | Event::KeyDown { keycode: Some(Keycode::Escape), .. } => return,
+            Event::Window { win_event: WindowEvent::Exposed, .. } => {
 
-    eval(include_str!("../demo.js")); // tmp
+            },
+            _ => {}
+        }
+
+        // TODO: framerate limiting
+    }
 
 }
 
-// use pathfinder_canvas::{Canvas, CanvasFontContext, TextAlign};
-// use pathfinder_color::ColorF;
-// use pathfinder_geometry::vector::{vec2f, vec2i};
-// use pathfinder_gl::{GLDevice, GLVersion};
-// use pathfinder_renderer::concurrent::rayon::RayonExecutor;
-// use pathfinder_renderer::concurrent::scene_proxy::SceneProxy;
-// use pathfinder_renderer::gpu::options::{DestFramebuffer, RendererOptions};
-// use pathfinder_renderer::gpu::renderer::Renderer;
-// use pathfinder_renderer::options::BuildOptions;
-// use pathfinder_resources::embedded::EmbeddedResourceLoader;
-// use sdl2::event::{Event, WindowEvent};
-// use sdl2::keyboard::Keycode;
-// use sdl2::video::GLProfile;
 
 
 // fn _main() {

@@ -1,19 +1,12 @@
-/*
- *
- * TODO
- *
- * add object-inspect
- * title / get_window
- */
-
 (function() {
-    let id = 0;
-
     // https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement
+
+    let id = 0;
 
     class HTMLCanvasElement {
         constructor() {
             this.id = id++;
+            QJSC_initCanvas(this.id);
         }
 
         getContext = (type) => {
@@ -46,6 +39,8 @@
     }
 
     class Window {
+        // title
+        // close
     }
 
     Object.assign(globalThis, {
