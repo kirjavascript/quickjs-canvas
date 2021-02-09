@@ -1,5 +1,5 @@
 use pathfinder_canvas::{
-    Canvas, CanvasRenderingContext2D, CanvasFontContext, TextAlign
+    Canvas, CanvasRenderingContext2D, CanvasFontContext, Vector2I
 };
 use pathfinder_color::ColorF;
 use pathfinder_geometry::vector::{vec2f, vec2i};
@@ -40,7 +40,7 @@ impl CanvasWindow {
             background_color: Some(ColorF::white()),
             ..RendererOptions::default()
         };
-        let mut renderer = Renderer::new(device, &resource_loader, DestFramebuffer::full_window(window_size), options);
+        let renderer = Renderer::new(device, &resource_loader, DestFramebuffer::full_window(window_size), options);
 
         let mut ctx = Canvas::new(window_size.to_f32()).get_context_2d(CanvasFontContext::from_system_source());
 
@@ -58,13 +58,23 @@ impl CanvasWindow {
         }
     }
 
-    pub fn set_size() {
-    }
-
     pub fn render(&mut self) {
-        self.ctx.into_canvas();
-        // let mut scene = SceneProxy::from_scene(self.canvas.into_canvas().into_scene(), RayonExecutor);
-        // scene.build_and_render(&mut self.renderer, BuildOptions::default());
-        // self.window.gl_swap_window();
+        // TODO: make this function less shit
+
+        // create a fake default that self can hold while we grab self.ctx to play with
+        let fake = Canvas::new(vec2f(0.,0.)).get_context_2d(CanvasFontContext::from_system_source());
+        let ctx = std::mem::replace(&mut self.ctx, fake);
+
+        // extract a scene
+        let scene = ctx.into_canvas().into_scene();
+        let scene_clone = scene.clone();
+
+        // use the clone to restore self.ctx
+        self.ctx = Canvas::from_scene(scene_clone).get_context_2d(CanvasFontContext::from_system_source());
+
+        // create the scene proxy and render
+        let scene = SceneProxy::from_scene(scene, RayonExecutor);
+        scene.build_and_render(&mut self.renderer, BuildOptions::default());
+        self.window.gl_swap_window();
     }
 }

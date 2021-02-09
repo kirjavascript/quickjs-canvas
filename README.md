@@ -4,3 +4,4 @@ desktop framebuffer; web API
 
 * add gumdrop
 * everything else
+* 3d

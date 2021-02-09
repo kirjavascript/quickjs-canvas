@@ -66,14 +66,14 @@ fn main() {
             Event::Quit {..} | Event::KeyDown { keycode: Some(Keycode::Escape), .. } => return,
             Event::Window { win_event: WindowEvent::Exposed, .. } => {
 
+        for (_, canvas) in canvases.lock().unwrap().iter_mut() {
+            canvas.render();
+        }
 
             },
             _ => {}
         }
 
-        for (_, canvas) in canvases.lock().unwrap().iter() {
-            canvas.render();
-        }
 
         // TODO: framerate limiting
     }
