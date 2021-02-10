@@ -1,4 +1,9 @@
 const canvas = new Canvas();
 const ctx = canvas.getContext('2d');
 
-console.log([123, 123.46]);
+ctx.fillText('hello world', 32.1, 48.1);
+
+const canvas2 = new Canvas();
+const ctx2 = canvas2.getContext('2d');
+
+ctx2.fillText('goodbye world', 32.1, 48.1);

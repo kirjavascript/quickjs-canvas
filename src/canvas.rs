@@ -5,7 +5,6 @@ use pathfinder_color::ColorF;
 use pathfinder_geometry::vector::{vec2f, vec2i};
 use pathfinder_gl::{GLDevice, GLVersion};
 use pathfinder_renderer::concurrent::rayon::RayonExecutor;
-use pathfinder_renderer::scene::Scene;
 use pathfinder_renderer::concurrent::scene_proxy::SceneProxy;
 use pathfinder_renderer::gpu::options::{DestFramebuffer, RendererOptions};
 use pathfinder_renderer::gpu::renderer::Renderer;
@@ -56,10 +55,10 @@ impl CanvasWindow {
         }
     }
 
-    pub fn test(&mut self, frames: i32) {
+    pub fn fill_text(&mut self, text: String, x: f64, y: f64) {
         self.ctx.set_font("Hack-Regular");
         self.ctx.set_font_size(32.0);
-        self.ctx.fill_text(&frames.to_string(), vec2f(32.0, 48.0));
+        self.ctx.fill_text(&text, vec2f(x as f32, y as f32));
     }
 
     pub fn render(&mut self) {

@@ -43,6 +43,10 @@
         constructor(id) {
             this.id = id;
         }
+
+        fillText(text, x, y) {
+            QJSC_fillText(this.id, text, x, y);
+        }
     }
 
     class Window {

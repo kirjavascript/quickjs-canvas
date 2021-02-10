@@ -47,11 +47,19 @@ fn main() {
     let canvases = Arc::new(Mutex::new(HashMap::new()));
 
     // TODO: JSEnv struct
+    // TODO: move bindings into a module with this
 
     context.add_callback("QJSC_initCanvas", clone!(canvases =>
         move |id: i32| {
             let video = video.lock().unwrap();
             canvases.lock().unwrap().insert(id, CanvasWindow::new(&video));
+            id
+        }
+     )).unwrap();
+
+    context.add_callback("QJSC_fillText", clone!(canvases =>
+        move |id: i32, text: String, x: f64, y: f64| {
+            canvases.lock().unwrap().get_mut(&id).unwrap().fill_text(text, x, y);
             0
         }
      )).unwrap();
@@ -70,7 +78,7 @@ fn main() {
             Event::Quit {..} | Event::KeyDown { keycode: Some(Keycode::Escape), .. } => return,
             Event::Window { win_event: WindowEvent::Exposed, .. } => {
                 for (_, canvas) in canvases.lock().unwrap().iter_mut() {
-                    canvas.test(frames);
+                    // canvas.test(frames);
                     canvas.render();
                 }
             },
