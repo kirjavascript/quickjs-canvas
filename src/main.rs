@@ -86,7 +86,6 @@ fn main() {
 
         for (_, canvas) in canvases.lock().unwrap().iter_mut() {
             canvas.render();
-            // TODO: dirty flag
         }
 
         // framerate limiting

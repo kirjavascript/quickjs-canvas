@@ -21,6 +21,7 @@ pub struct CanvasWindow {
     window: Window,
     window_size: Vector2I,
     font_context: CanvasFontContext,
+    dirty: bool,
 }
 
 impl CanvasWindow {
@@ -56,6 +57,7 @@ impl CanvasWindow {
             window_size,
             gl_context,
             font_context,
+            dirty: true,
         }
     }
 
@@ -63,9 +65,17 @@ impl CanvasWindow {
         // self.ctx.set_font("Hack-Regular");
         self.ctx.set_font_size(32.0);
         self.ctx.fill_text(&text, vec2f(x as f32, y as f32));
+        self.dirty = true;
     }
 
     pub fn render(&mut self) {
+        if self.dirty {
+            self.render_base();
+            self.dirty = false;
+        }
+    }
+
+    fn render_base(&mut self) {
         // TODO: make this function less shit
 
         // create a fake default that self can hold while we grab self.ctx to play with
