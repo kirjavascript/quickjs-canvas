@@ -47,7 +47,10 @@
         }
 
         fillText(text, x, y) {
-            QJSC_fillText(this.id, text, float(x), float(y));
+            QJSC_fillText(this.id, String(text), float(x), float(y));
+        }
+        clearRect(x, y, w, h) {
+            QJSC_clearRect(this.id, float(x), float(y), float(w), float(h));
         }
     }
 
@@ -63,7 +66,33 @@
 
     // alert() global
 
+    const frameQueue = [];
+
+    function requestAnimationFrame(fn) {
+        frameQueue.push(fn);
+    }
+
+    function flushRAFQueue() {
+        const processQueue = frameQueue.splice(0, frameQueue.length);
+        while (processQueue.length > 0) {
+            processQueue.pop()();
+        }
+    }
+
     Object.assign(globalThis, {
+        // public
         Canvas: HTMLCanvasElement,
+        requestAnimationFrame,
+        // private
+        flushRAFQueue,
     });
+
+    ['flushRAFQueue']
+        .forEach(key => {
+            Object.defineProperty(globalThis, key, {
+                enumerable: false,
+                configurable: false,
+                writable: false,
+            });
+        });
 })();

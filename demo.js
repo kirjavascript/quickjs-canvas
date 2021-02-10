@@ -1,11 +1,13 @@
 const canvas = new Canvas();
 const ctx = canvas.getContext('2d');
 
-ctx.fillText('hello world', 32, 48);
+let i = 0;
 
-const canvas2 = new Canvas();
-const ctx2 = canvas2.getContext('2d');
+(function loop() {
+    requestAnimationFrame(loop);
+    ctx.clearRect(0, 0, 300, 150);
+    ctx.fillText('rAF demo', (Math.cos(i/10) * 50)+50, (Math.sin(i/10) * 50)+75);
+    i++;
 
-ctx2.fillText('goodbye world', 32, 48);
-
-// TODO: http://www.zebkit.org/dark/about.html
+    // TODO: fix slowdown - related to how the UI renders?
+})();

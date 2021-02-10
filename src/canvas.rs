@@ -1,5 +1,5 @@
 use pathfinder_canvas::{
-    Canvas, CanvasRenderingContext2D, CanvasFontContext, Vector2I
+    Canvas, CanvasRenderingContext2D, CanvasFontContext, Vector2I, RectF, ColorU
 };
 use pathfinder_color::ColorF;
 use pathfinder_geometry::vector::{vec2f, vec2i};
@@ -64,7 +64,15 @@ impl CanvasWindow {
     pub fn fill_text(&mut self, text: String, x: f64, y: f64) {
         // self.ctx.set_font("Hack-Regular");
         self.ctx.set_font_size(32.0);
+        self.ctx.set_fill_style(ColorU::black());
         self.ctx.fill_text(&text, vec2f(x as f32, y as f32));
+        self.dirty = true;
+    }
+
+    pub fn clear_rect(&mut self, x: f64, y: f64, w: f64, h: f64) {
+        let rect = RectF::from_points(vec2f(x as f32, y as f32), vec2f(w as f32, h as f32));
+        self.ctx.set_fill_style(ColorU::white());
+        self.ctx.fill_rect(rect);
         self.dirty = true;
     }
 

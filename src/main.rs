@@ -49,6 +49,7 @@ fn main() {
 
     // TODO: JSEnv struct
     // TODO: move bindings into a module with this
+    // TODO: http://www.zebkit.org/dark/about.html
 
     context.add_callback("QJSC_initCanvas", clone!(canvases =>
         move |id: i32| {
@@ -61,7 +62,14 @@ fn main() {
     context.add_callback("QJSC_fillText", clone!(canvases =>
         move |id: i32, text: String, x: f64, y: f64| {
             canvases.lock().unwrap().get_mut(&id).unwrap().fill_text(text, x, y);
-            0
+            id
+        }
+     )).unwrap();
+
+    context.add_callback("QJSC_clearRect", clone!(canvases =>
+        move |id: i32, x: f64, y: f64, w: f64, h: f64| {
+            canvases.lock().unwrap().get_mut(&id).unwrap().clear_rect(x, y, w, h);
+            id
         }
      )).unwrap();
 
@@ -76,13 +84,15 @@ fn main() {
     let frame_size = Duration::from_millis(16);
     loop {
         for event in event_pump.poll_iter() {
-            match event { // TODO: poll_iter
+            match event {
                 Event::Quit {..} | Event::KeyDown { keycode: Some(Keycode::Escape), .. } => return,
                 Event::Window { win_event: WindowEvent::Exposed, .. } => {
                 },
                 _ => {}
             }
         }
+
+        context.call_function("flushRAFQueue", vec![0]).unwrap();
 
         for (_, canvas) in canvases.lock().unwrap().iter_mut() {
             canvas.render();

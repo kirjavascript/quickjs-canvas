@@ -4,8 +4,8 @@
 
 ### TODO
 
-* requestAnimationFrame
 * support full canvas API
+* resizing
 * add gumdrop
 * setTimeout / setInterval
 * events
