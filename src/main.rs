@@ -40,29 +40,30 @@ fn main() {
 
     // stick video in a mutex so canvas can access it
 
-    let video = Arc::new(Mutex::new(video));
+    // let video = Arc::new(Mutex::new(video));
 
     // attach QJSC controls to context
 
-    let canvases = Arc::new(Mutex::new(HashMap::new()));
+    // let canvases = Arc::new(Mutex::new(HashMap::new()));
 
-    context.add_callback("QJSC_initCanvas", clone!(canvases =>
-        move |id: i32| {
-            let video = video.lock().unwrap();
-            canvases.lock().unwrap().insert(id, CanvasWindow::new(&video));
-            0
-        }
-     )).unwrap();
+    // context.add_callback("QJSC_initCanvas", clone!(canvases =>
+    //     move |id: i32| {
+    //         let video = video.lock().unwrap();
+    //         canvases.lock().unwrap().insert(id, CanvasWindow::new(&video));
+    //         0
+    //     }
+    //  )).unwrap();
 
     // load initial user code
 
     eval(include_str!("../demo.js")); // TODO: replace with user supplied code
 
-        for (_, canvas) in canvases.lock().unwrap().iter_mut() {
-            // canvas.test();
-            canvas.render();
-        }
+        // for (_, canvas) in canvases.lock().unwrap().iter_mut() {
+        //     // canvas.test();
+        //     canvas.render();
+        // }
 
+    let mut c = CanvasWindow::new(&video);
 
     // event loop
 
@@ -72,7 +73,7 @@ fn main() {
         match event_pump.wait_event() { // TODO: poll_iter
             Event::Quit {..} | Event::KeyDown { keycode: Some(Keycode::Escape), .. } => return,
             Event::Window { win_event: WindowEvent::Exposed, .. } => {
-
+                c.render();
 
             },
             _ => {}

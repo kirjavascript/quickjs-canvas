@@ -5,6 +5,7 @@ use pathfinder_color::ColorF;
 use pathfinder_geometry::vector::{vec2f, vec2i};
 use pathfinder_gl::{GLDevice, GLVersion};
 use pathfinder_renderer::concurrent::rayon::RayonExecutor;
+use pathfinder_renderer::concurrent::executor::SequentialExecutor;
 use pathfinder_renderer::scene::Scene;
 use pathfinder_renderer::concurrent::scene_proxy::SceneProxy;
 use pathfinder_renderer::gpu::options::{DestFramebuffer, RendererOptions};
@@ -12,13 +13,15 @@ use pathfinder_renderer::gpu::renderer::Renderer;
 use pathfinder_renderer::options::BuildOptions;
 use pathfinder_resources::embedded::EmbeddedResourceLoader;
 use sdl2::VideoSubsystem;
-use sdl2::video::Window;
+use sdl2::video::{Window, GLContext};
 
 pub struct CanvasWindow {
     window: Window,
     // ctx: CanvasRenderingContext2D,
     // scene: Scene,
     renderer: Renderer<GLDevice>,
+    window_size: Vector2I,
+    gl_context: GLContext,
 }
 
 impl CanvasWindow {
@@ -44,12 +47,12 @@ impl CanvasWindow {
         };
         let mut renderer = Renderer::new(device, &resource_loader, DestFramebuffer::full_window(window_size), options);
 
-//         let mut ctx = Canvas::new(window_size.to_f32()).get_context_2d(CanvasFontContext::from_system_source());
+        // let mut ctx = Canvas::new(window_size.to_f32()).get_context_2d(CanvasFontContext::from_system_source());
 
-//         // Draw the text.
-//         ctx.set_font("Hack-Regular");
-//         ctx.set_font_size(32.0);
-//         ctx.fill_text("hi servo", vec2f(32.0, 48.0));
+        // // Draw the text.
+        // ctx.set_font("Hack-Regular");
+        // ctx.set_font_size(32.0);
+        // ctx.fill_text("hi servo", vec2f(32.0, 48.0));
 
         // let mut scene = SceneProxy::from_scene(ctx.into_canvas().into_scene(), RayonExecutor);
         // scene.build_and_render(&mut renderer, BuildOptions::default());
@@ -57,12 +60,13 @@ impl CanvasWindow {
 
         // // Render the canvas to screen.
 
-        // let mut ctx = Canvas::new(window_size.to_f32()).get_context_2d(CanvasFontContext::from_system_source());
         Self {
             window,
             // ctx,
             // scene: Canvas::new(window_size.to_f32()).into_scene(),
             renderer,
+            window_size,
+            gl_context, // dropping this too soon breaks shit
         }
     }
 
@@ -79,14 +83,12 @@ impl CanvasWindow {
 
     pub fn render(&mut self) {
 
-        let window_size = vec2i(300, 150);
-
-        let mut ctx = Canvas::new(window_size.to_f32()).get_context_2d(CanvasFontContext::from_system_source());
+        let mut ctx = Canvas::new(self.window_size.to_f32()).get_context_2d(CanvasFontContext::from_system_source());
 
         // Draw the text.
         ctx.set_font("Hack-Regular");
         ctx.set_font_size(32.0);
-        ctx.fill_text("hi servo", vec2f(32.0, 48.0));
+        ctx.fill_text("omg hi servo", vec2f(32.0, 48.0));
         // ctx.set_fill_style(pathfinder_canvas::FillStyle::Color(pathfinder_canvas::ColorU::black()));
         // ctx.fill_rect(pathfinder_canvas::RectF::new(vec2f(0.,0.), vec2f(10.,10.)));
 
