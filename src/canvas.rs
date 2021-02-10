@@ -20,6 +20,7 @@ pub struct CanvasWindow {
     renderer: Renderer<GLDevice>,
     window: Window,
     window_size: Vector2I,
+    font_context: CanvasFontContext,
 }
 
 impl CanvasWindow {
@@ -44,7 +45,9 @@ impl CanvasWindow {
         };
         let renderer = Renderer::new(device, &resource_loader, DestFramebuffer::full_window(window_size), options);
 
-        let ctx = Canvas::new(window_size.to_f32()).get_context_2d(CanvasFontContext::from_system_source());
+        let font_context = CanvasFontContext::from_system_source();
+
+        let ctx = Canvas::new(window_size.to_f32()).get_context_2d(font_context.clone());
 
         Self {
             window,
@@ -52,6 +55,7 @@ impl CanvasWindow {
             renderer,
             window_size,
             gl_context,
+            font_context,
         }
     }
 
@@ -66,7 +70,7 @@ impl CanvasWindow {
 
         // create a fake default that self can hold while we grab self.ctx to play with
         let fake = Canvas::new(vec2f(0.,0.))
-            .get_context_2d(CanvasFontContext::from_system_source());
+            .get_context_2d(self.font_context.clone());
         let ctx = std::mem::replace(&mut self.ctx, fake);
 
         // extract a scene
@@ -75,7 +79,7 @@ impl CanvasWindow {
 
         // use the clone to restore self.ctx
         self.ctx = Canvas::from_scene(scene_clone)
-            .get_context_2d(CanvasFontContext::from_system_source());
+            .get_context_2d(self.font_context.clone());
 
         // set the current GL context
         self.window.gl_make_current(&self.gl_context).unwrap();
