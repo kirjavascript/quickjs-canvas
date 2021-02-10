@@ -5,6 +5,8 @@
 
     let id = 0;
 
+    const float = (num) => num + Number.EPSILON;
+
     class HTMLCanvasElement {
         constructor() {
             this.id = id++;
@@ -45,7 +47,7 @@
         }
 
         fillText(text, x, y) {
-            QJSC_fillText(this.id, text, x, y);
+            QJSC_fillText(this.id, text, float(x), float(y));
         }
     }
 

@@ -70,7 +70,7 @@ fn main() {
 
     // event loop
 
-    let mut frames = 0;
+    let mut _frames = 0;
     let mut event_pump = sdl_context.event_pump().unwrap();
     loop {
 
@@ -78,7 +78,6 @@ fn main() {
             Event::Quit {..} | Event::KeyDown { keycode: Some(Keycode::Escape), .. } => return,
             Event::Window { win_event: WindowEvent::Exposed, .. } => {
                 for (_, canvas) in canvases.lock().unwrap().iter_mut() {
-                    // canvas.test(frames);
                     canvas.render();
                 }
             },
@@ -87,7 +86,7 @@ fn main() {
 
         // TODO: framerate limiting
 
-        frames += 1;
+        _frames += 1;
     }
 
 }

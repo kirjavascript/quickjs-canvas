@@ -56,7 +56,7 @@ impl CanvasWindow {
     }
 
     pub fn fill_text(&mut self, text: String, x: f64, y: f64) {
-        self.ctx.set_font("Hack-Regular");
+        // self.ctx.set_font("Hack-Regular");
         self.ctx.set_font_size(32.0);
         self.ctx.fill_text(&text, vec2f(x as f32, y as f32));
     }
