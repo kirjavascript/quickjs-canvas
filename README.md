@@ -4,12 +4,12 @@
 
 ### TODO
 
+* requestAnimationFrame
 * support full canvas API
 * add gumdrop
-* support requestAnimationFrame
-* support setTimeout / setInterval
-* support events
-* support IO
-* fix framerate
+* setTimeout / setInterval
+* events
+* clipboard
+* IO
 * everything else
 * webGL

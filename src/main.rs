@@ -5,6 +5,7 @@ use canvas::CanvasWindow;
 
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
+use std::time::{Instant, Duration};
 
 use quick_js::{Context, JsValue, console::Level};
 use sdl2::event::{Event, WindowEvent};
@@ -12,7 +13,7 @@ use sdl2::keyboard::Keycode;
 use sdl2::video::GLProfile;
 
 fn main() {
-    // create JS env
+    // create JS ctx
     let context = Context::builder()
         .console(|level: Level, args: Vec<JsValue>| {
             eprintln!("{}: {:?}", level, args);
@@ -70,23 +71,32 @@ fn main() {
 
     // event loop
 
-    let mut _frames = 0;
+    let mut time = Instant::now();
     let mut event_pump = sdl_context.event_pump().unwrap();
+    let frame_size = Duration::from_millis(16);
     loop {
-
-        match event_pump.wait_event() { // TODO: poll_iter
-            Event::Quit {..} | Event::KeyDown { keycode: Some(Keycode::Escape), .. } => return,
-            Event::Window { win_event: WindowEvent::Exposed, .. } => {
-                for (_, canvas) in canvases.lock().unwrap().iter_mut() {
-                    canvas.render();
-                }
-            },
-            _ => {}
+        for event in event_pump.poll_iter() {
+            match event { // TODO: poll_iter
+                Event::Quit {..} | Event::KeyDown { keycode: Some(Keycode::Escape), .. } => return,
+                Event::Window { win_event: WindowEvent::Exposed, .. } => {
+                },
+                _ => {}
+            }
         }
 
-        // TODO: framerate limiting
+        for (_, canvas) in canvases.lock().unwrap().iter_mut() {
+            canvas.render();
+            // TODO: dirty flag
+        }
 
-        _frames += 1;
+        // framerate limiting
+
+        let now = Instant::now();
+        let delta = now.duration_since(time);
+        if delta < frame_size {
+            std::thread::sleep(frame_size - delta);
+        }
+        time = now;
     }
 
 }
