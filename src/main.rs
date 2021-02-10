@@ -64,6 +64,7 @@ fn main() {
         // }
 
     let mut c = CanvasWindow::new(&video);
+    let mut d = CanvasWindow::new(&video);
 
     // event loop
 
@@ -74,11 +75,10 @@ fn main() {
             Event::Quit {..} | Event::KeyDown { keycode: Some(Keycode::Escape), .. } => return,
             Event::Window { win_event: WindowEvent::Exposed, .. } => {
                 c.render();
-
+                d.render();
             },
             _ => {}
         }
-
 
         // TODO: framerate limiting
     }

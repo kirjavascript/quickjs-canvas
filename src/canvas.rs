@@ -5,7 +5,6 @@ use pathfinder_color::ColorF;
 use pathfinder_geometry::vector::{vec2f, vec2i};
 use pathfinder_gl::{GLDevice, GLVersion};
 use pathfinder_renderer::concurrent::rayon::RayonExecutor;
-use pathfinder_renderer::concurrent::executor::SequentialExecutor;
 use pathfinder_renderer::scene::Scene;
 use pathfinder_renderer::concurrent::scene_proxy::SceneProxy;
 use pathfinder_renderer::gpu::options::{DestFramebuffer, RendererOptions};
@@ -21,7 +20,7 @@ pub struct CanvasWindow {
     // scene: Scene,
     renderer: Renderer<GLDevice>,
     window_size: Vector2I,
-    gl_context: GLContext,
+    gl_context: GLContext, // need to make sure this isn't dropped
 }
 
 impl CanvasWindow {
@@ -33,10 +32,9 @@ impl CanvasWindow {
             .build()
             .unwrap();
 
-        // Create the GL context, and make it current.
+        // Create the GL context for the window
         let gl_context = window.gl_create_context().unwrap();
         gl::load_with(|name| video.gl_get_proc_address(name) as *const _);
-        window.gl_make_current(&gl_context).unwrap();
 
         // Create a Pathfinder renderer.
         let resource_loader = EmbeddedResourceLoader::new();
@@ -66,19 +64,8 @@ impl CanvasWindow {
             // scene: Canvas::new(window_size.to_f32()).into_scene(),
             renderer,
             window_size,
-            gl_context, // dropping this too soon breaks shit
+            gl_context,
         }
-    }
-
-    pub fn test(&mut self) {
-        // let canvas = Canvas::from_scene(self.scene.clone());
-        // let mut ctx = canvas.get_context_2d(CanvasFontContext::from_system_source());
-
-        // ctx.set_font("Hack-Regular");
-        // ctx.set_font_size(32.0);
-        // ctx.fill_text("hi servo", vec2f(32.0, 48.0));
-
-        // self.scene = ctx.into_canvas().into_scene();
     }
 
     pub fn render(&mut self) {
@@ -92,7 +79,11 @@ impl CanvasWindow {
         // ctx.set_fill_style(pathfinder_canvas::FillStyle::Color(pathfinder_canvas::ColorU::black()));
         // ctx.fill_rect(pathfinder_canvas::RectF::new(vec2f(0.,0.), vec2f(10.,10.)));
 
-        let mut scene = SceneProxy::from_scene(ctx.into_canvas().into_scene(), RayonExecutor);
+        // set the current GL context
+        self.window.gl_make_current(&self.gl_context).unwrap();
+
+        // render
+        let scene = SceneProxy::from_scene(ctx.into_canvas().into_scene(), RayonExecutor);
         scene.build_and_render(&mut self.renderer, BuildOptions::default());
         self.window.gl_swap_window();
 

@@ -51,7 +51,11 @@
         }
         // title
         // close
+        // moveTo
+
     }
+
+    // alert() global
 
     Object.assign(globalThis, {
         Canvas: HTMLCanvasElement,

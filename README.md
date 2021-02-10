@@ -1,4 +1,4 @@
-desktop framebuffer; web API
+native <canvas> for desktop
 
 # TODO
 
