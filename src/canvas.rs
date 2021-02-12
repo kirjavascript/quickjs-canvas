@@ -1,5 +1,11 @@
 use pathfinder_canvas::{
-    Canvas, CanvasRenderingContext2D, CanvasFontContext, Vector2I, RectF, ColorU
+    Canvas,
+    CanvasRenderingContext2D,
+    CanvasFontContext,
+    Vector2F,
+    RectF,
+    ColorU,
+    Transform2F,
 };
 use pathfinder_color::ColorF;
 use pathfinder_geometry::vector::{vec2f, vec2i};
@@ -19,7 +25,7 @@ pub struct CanvasWindow {
     gl_context: GLContext, // need to make sure this isn't dropped
     renderer: Renderer<GLDevice>,
     window: Window,
-    window_size: Vector2I,
+    window_size: Vector2F,
     font_context: CanvasFontContext,
     dirty: bool,
 }
@@ -27,7 +33,7 @@ pub struct CanvasWindow {
 impl CanvasWindow {
     pub fn new(video: &VideoSubsystem) -> Self {
 
-        let window_size = vec2i(300, 150);
+        let window_size = vec2f(300., 150.);
         let window = video.window("quickjs-canvas", window_size.x() as u32, window_size.y() as u32)
             .opengl()
             .build()
@@ -44,11 +50,11 @@ impl CanvasWindow {
             background_color: Some(ColorF::white()),
             ..RendererOptions::default()
         };
-        let renderer = Renderer::new(device, &resource_loader, DestFramebuffer::full_window(window_size), options);
+        let renderer = Renderer::new(device, &resource_loader, DestFramebuffer::full_window(window_size.to_i32()), options);
 
         let font_context = CanvasFontContext::from_system_source();
 
-        let ctx = Canvas::new(window_size.to_f32()).get_context_2d(font_context.clone());
+        let ctx = Canvas::new(window_size).get_context_2d(font_context.clone());
 
         Self {
             window,
@@ -84,20 +90,31 @@ impl CanvasWindow {
     }
 
     fn render_base(&mut self) {
-        // TODO: make this function less shit
 
-        // create a fake default that self can hold while we grab self.ctx to play with
-        let fake = Canvas::new(vec2f(0.,0.))
+        // TODO: convert to texture instead
+
+
+        let next_ctx = Canvas::new(self.window_size)
             .get_context_2d(self.font_context.clone());
-        let ctx = std::mem::replace(&mut self.ctx, fake);
+        let last_ctx = std::mem::replace(&mut self.ctx, next_ctx);
 
         // extract a scene
-        let scene = ctx.into_canvas().into_scene();
-        let scene_clone = scene.clone();
+        let scene = last_ctx.into_canvas().into_scene();
 
-        // use the clone to restore self.ctx
-        self.ctx = Canvas::from_scene(scene_clone)
-            .get_context_2d(self.font_context.clone());
+        let canvas_clone = Canvas::from_scene(scene.clone());
+        let pattern = self.ctx.create_pattern_from_canvas(
+            canvas_clone,
+            Transform2F::from_rotation(0.),
+        );
+
+        self.ctx.draw_image(pattern, self.window_size);
+
+        // self.ctx.draw_image(Canvas::from_scene(scene.clone()), self.window_size);
+
+        // // use the clone to restore self.ctx
+        // self.ctx = Canvas::from_scene(scene_clone)
+        //     .get_context_2d(self.font_context.clone());
+
 
         // set the current GL context
         self.window.gl_make_current(&self.gl_context).unwrap();

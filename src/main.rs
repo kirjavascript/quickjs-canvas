@@ -75,7 +75,7 @@ fn main() {
 
     // load initial user code
 
-    eval(include_str!("../demo.js")); // TODO: replace with user supplied code
+    eval(include_str!("../demo_raf.js")); // TODO: replace with user supplied code
 
     // event loop
 
@@ -92,7 +92,8 @@ fn main() {
             }
         }
 
-        context.call_function("flushRAFQueue", vec![0]).unwrap();
+        let args: Vec<i32> = vec![];
+        context.call_function("flushRAFQueue", args).unwrap();
 
         for (_, canvas) in canvases.lock().unwrap().iter_mut() {
             canvas.render();
