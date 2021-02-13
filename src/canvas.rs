@@ -1,4 +1,4 @@
-use sdl2::VideoSubsystem;
+use crate::sdl_env::SDLEnv;
 use sdl2::pixels::Color;
 use sdl2::video::Window;
 use sdl2::render::Canvas;
@@ -11,8 +11,8 @@ pub struct CanvasWindow {
 }
 
 impl CanvasWindow {
-    pub fn new(video: &VideoSubsystem) -> Self {
-        let window = video.window("quickjs-canvas", 300, 150)
+    pub fn new(sdl_env: &SDLEnv) -> Self {
+        let window = sdl_env.video.window("quickjs-canvas", 300, 150)
             .position_centered()
             .opengl()
             .build()

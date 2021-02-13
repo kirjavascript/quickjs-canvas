@@ -54,6 +54,8 @@
         clearRect(x, y, w, h) {
             QJSC_clearRect(this.id, float(x), float(y), float(w), float(h));
         }
+
+        // clear [new]
     }
 
     class Window {

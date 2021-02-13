@@ -4,7 +4,8 @@
 
 ### TODO
 
-* support full canvas API
+* document features
+* title
 * resizing
 * add gumdrop
 * setTimeout / setInterval
@@ -12,4 +13,5 @@
 * clipboard
 * IO
 * everything else
+* support full canvas API
 * webGL

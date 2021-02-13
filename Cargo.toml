@@ -6,4 +6,4 @@ edition = "2018"
 
 [dependencies]
 quick-js = "0.3.6"
-sdl2 = { version = "0.34.3", features = ["ttf", "gfx"] }
+sdl2 = { version = "0.34.3", features = ["bundled", "ttf", "gfx"] }

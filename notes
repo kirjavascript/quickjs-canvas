@@ -2,3 +2,5 @@ skulpin deps;
 
 skulpin = { git = "https://github.com/aclysma/skulpin", branch = "master", features = ["skulpin_sdl2"] }
 sdl2 = { version = ">=0.33, <=0.34.2", features = ["bundled", "static-link"] }
+
+TODO: http://www.zebkit.org/dark/about.html

@@ -1,7 +1,9 @@
+mod bind;
 mod canvas;
 mod clone;
+mod sdl_env;
 
-use canvas::CanvasWindow;
+use sdl_env::SDLEnv;
 
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
@@ -10,7 +12,6 @@ use std::time::{Instant, Duration};
 use quick_js::{Context, JsValue, console::Level};
 use sdl2::event::{Event, WindowEvent};
 use sdl2::keyboard::Keycode;
-use sdl2::video::GLProfile;
 
 fn main() {
     // create JS ctx
@@ -29,49 +30,26 @@ fn main() {
 
     eval(include_str!("./js/prelude.js"));
 
-    // setup UI
+    // setup UI and IO
 
     let sdl_context = sdl2::init().unwrap();
     let video = sdl_context.video().unwrap();
+    let ttf_context = sdl2::ttf::init().unwrap();
 
-    // Make sure we have at least a GL 3.0 context. Pathfinder requires this.
-    let gl_attributes = video.gl_attr();
-    gl_attributes.set_context_profile(GLProfile::Core);
-    gl_attributes.set_context_version(3, 3);
+    // stick SDL stuff in a mutex so canvas can access it
 
-    // stick video in a mutex so canvas can access it
-
-    let video = Arc::new(Mutex::new(video));
+    let sdl_env = Arc::new(Mutex::new(SDLEnv {
+        video,
+        ttf_context,
+    }));
 
     // attach QJSC controls to context
 
     let canvases = Arc::new(Mutex::new(HashMap::new()));
 
-    // TODO: JSEnv struct
-    // TODO: move bindings into a module with this
-    // TODO: http://www.zebkit.org/dark/about.html
+    // creating bindings to JS context
 
-    context.add_callback("QJSC_initCanvas", clone!(canvases =>
-        move |id: i32| {
-            let video = video.lock().unwrap();
-            canvases.lock().unwrap().insert(id, CanvasWindow::new(&video));
-            id
-        }
-     )).unwrap();
-
-    context.add_callback("QJSC_fillText", clone!(canvases =>
-        move |id: i32, text: String, x: f64, y: f64| {
-            canvases.lock().unwrap().get_mut(&id).unwrap().fill_text(text, x, y);
-            id
-        }
-     )).unwrap();
-
-    context.add_callback("QJSC_clearRect", clone!(canvases =>
-        move |id: i32, x: f64, y: f64, w: f64, h: f64| {
-            canvases.lock().unwrap().get_mut(&id).unwrap().clear_rect(x, y, w, h);
-            id
-        }
-     )).unwrap();
+    bind::bind_js(&context, sdl_env.clone(), canvases.clone());
 
     // load initial user code
 
