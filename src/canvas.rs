@@ -5,6 +5,7 @@ use sdl2::render::Canvas;
 use sdl2::rect::Rect;
 use sdl2::gfx::primitives::DrawRenderer;
 
+
 pub struct CanvasWindow {
     dirty: bool,
     canvas: Canvas<Window>,
@@ -21,7 +22,7 @@ impl CanvasWindow {
         let mut canvas = window
             .into_canvas()
             .build()
-            .expect("could not cfeate canvas from window");
+            .expect("could not create canvas from window");
 
         canvas.set_draw_color(Color::RGB(255, 255, 255));
         canvas.clear();
