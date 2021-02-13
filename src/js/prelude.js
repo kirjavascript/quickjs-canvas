@@ -20,7 +20,7 @@
             return new CanvasRenderingContext2D(this.id);
         };
 
-        getWindow() {
+        get window() {
             return new Window(this.id);
         }
 
@@ -61,6 +61,17 @@
     class Window {
         constructor(id) {
             this.id = id;
+        }
+
+        #title = 'quickjs-canvas';
+
+        get title() {
+            return this.#title;
+        }
+
+        set title(prop) {
+            this.#title = prop;
+            QJSC_setTitle(this.id, String(prop));
         }
         // title
         // close

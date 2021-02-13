@@ -1,6 +1,8 @@
 const canvas = new Canvas();
 const ctx = canvas.getContext('2d');
 
+canvas.window.title = 'rAF demo';
+
 let i = 0;
 
 (function loop() {
