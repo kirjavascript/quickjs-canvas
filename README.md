@@ -4,7 +4,6 @@
 
 ### TODO
 
-* resizing
 * add gumdrop + examples directory
 * support useful canvas API subset
 * document features
@@ -15,3 +14,4 @@
 * everything else
 * setTimeout / setInterval
 * support full canvas API
+* interactive mode

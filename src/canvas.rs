@@ -80,14 +80,13 @@ impl CanvasWindow {
         self.width = width as u32;
         self.height = height as u32;
         self.canvas.window_mut().set_size(self.width, self.height)
-            .expect("unable to set size");
+            .expect("failed to set window size");
         self.canvas.clear();
         self.canvas.present();
     }
 
     pub fn set_title(&mut self, text: String) {
-        self.canvas.window_mut().set_title(&text)
-            .expect("unable to set title");
+        self.canvas.window_mut().set_title(&text).ok();
     }
 
     pub fn render(&mut self) {

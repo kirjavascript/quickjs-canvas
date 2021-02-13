@@ -1,3 +1,4 @@
+mod args;
 mod bind;
 mod canvas;
 mod clone;
@@ -14,6 +15,7 @@ use sdl2::event::{Event, WindowEvent};
 use sdl2::keyboard::Keycode;
 
 fn main() {
+    let args = args::get();
     // create JS ctx
     let context = Context::builder()
         .console(|level: Level, args: Vec<JsValue>| {
@@ -51,7 +53,7 @@ fn main() {
 
     // load initial user code
 
-    eval(include_str!("../demo_raf.js")); // TODO: replace with user supplied code
+    // eval(include_str!("../demo_raf.js")); // TODO: replace with user supplied code
 
     // event loop
 
