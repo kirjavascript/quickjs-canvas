@@ -35,6 +35,7 @@ impl CanvasWindow {
 
         let window_size = vec2f(300., 150.);
         let window = video.window("quickjs-canvas", window_size.x() as u32, window_size.y() as u32)
+            .position_centered()
             .opengl()
             .build()
             .unwrap();
@@ -91,30 +92,21 @@ impl CanvasWindow {
 
     fn render_base(&mut self) {
 
-        // TODO: convert to texture instead
-
-
         let next_ctx = Canvas::new(self.window_size)
             .get_context_2d(self.font_context.clone());
         let last_ctx = std::mem::replace(&mut self.ctx, next_ctx);
 
-        // extract a scene
         let scene = last_ctx.into_canvas().into_scene();
 
-        let canvas_clone = Canvas::from_scene(scene.clone());
-        let pattern = self.ctx.create_pattern_from_canvas(
-            canvas_clone,
-            Transform2F::from_rotation(0.),
-        );
+        // let canvas_clone = Canvas::from_scene(scene.clone());
+        // let pattern = self.ctx.create_pattern_from_canvas(
+        //     canvas_clone,
+        //     Transform2F::from_rotation(0.),
+        // );
 
-        self.ctx.draw_image(pattern, self.window_size);
+        // self.ctx.draw_image(pattern, self.window_size);
 
-        // self.ctx.draw_image(Canvas::from_scene(scene.clone()), self.window_size);
-
-        // // use the clone to restore self.ctx
-        // self.ctx = Canvas::from_scene(scene_clone)
-        //     .get_context_2d(self.font_context.clone());
-
+        self.ctx.draw_image(Canvas::from_scene(scene.clone()), self.window_size);
 
         // set the current GL context
         self.window.gl_make_current(&self.gl_context).unwrap();

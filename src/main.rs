@@ -81,7 +81,7 @@ fn main() {
 
     let mut time = Instant::now();
     let mut event_pump = sdl_context.event_pump().unwrap();
-    let frame_size = Duration::from_millis(16);
+    let frame_size = Duration::from_micros(16667);
     loop {
         for event in event_pump.poll_iter() {
             match event {
