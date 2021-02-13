@@ -1,3 +1,3 @@
 function Canvas() {
-    return document.body.appendChild(document.createElement('canvas'));
+    return Object.assign(document.body.appendChild(document.createElement('canvas')), { window: {} });
 }

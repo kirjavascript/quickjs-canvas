@@ -7,7 +7,6 @@ use sdl2::gfx::primitives::DrawRenderer;
 use sdl2_unifont::renderer::SurfaceRenderer;
 
 pub struct CanvasWindow {
-    dirty: bool,
     canvas: Canvas<Window>,
     texture_creator: TextureCreator<WindowContext>,
     width: u32,
@@ -35,9 +34,7 @@ impl CanvasWindow {
 
         let texture_creator = canvas.texture_creator();
 
-
         Self {
-            dirty: false,
             canvas,
             width,
             height,
@@ -64,30 +61,36 @@ impl CanvasWindow {
             .create_texture_from_surface(screen)
             .unwrap();
         self.canvas.copy(&text, None, None).unwrap();
-
-        self.dirty = true;
     }
 
     pub fn clear_rect(&mut self, x: f64, y: f64, w: f64, h: f64) {
-        // TODO: check if equal to size on canvas and call canvas.clear()
         // TODO: support backgroundColor
-        self.canvas.set_draw_color(Color::RGB(255, 255, 255));
-        self.canvas.fill_rect(Rect::new(x as i32, y as i32, w as u32, h as u32)).unwrap();
-        self.dirty = true;
-    }
+        // TODO: change to ints
+        if x == 0. && y == 0. && w as u32 == self.width && h as u32 == self.height {
+            // will need to reset bg color
+            self.canvas.clear();
+        } else {
+            self.canvas.set_draw_color(Color::RGB(255, 255, 255));
+            self.canvas.fill_rect(Rect::new(x as i32, y as i32, w as u32, h as u32)).unwrap();
 
-    pub fn set_title(&mut self, text: String) {
-        self.canvas.window_mut().set_title(&text).expect("unable to set title");
-    }
-
-    pub fn render(&mut self) {
-        if self.dirty {
-            self.render_base();
-            self.dirty = false;
         }
     }
 
-    fn render_base(&mut self) {
+    pub fn set_size(&mut self, width: i32, height: i32) {
+        self.width = width as u32;
+        self.height = height as u32;
+        self.canvas.window_mut().set_size(self.width, self.height)
+            .expect("unable to set size");
+        self.canvas.clear();
+        self.canvas.present();
+    }
+
+    pub fn set_title(&mut self, text: String) {
+        self.canvas.window_mut().set_title(&text)
+            .expect("unable to set title");
+    }
+
+    pub fn render(&mut self) {
         self.canvas.present();
     }
 }

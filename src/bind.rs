@@ -21,6 +21,14 @@ pub fn bind_js(
         }
      )).unwrap();
 
+    context.add_callback("QJSC_setSize", clone!(canvases =>
+        move |id: i32, width: i32, height: i32| {
+            let mut canvases = canvases.lock().unwrap();
+            canvases.get_mut(&id).unwrap().set_size(width, height);
+            id
+        }
+     )).unwrap();
+
     // ctx methods
 
     context.add_callback("QJSC_fillText", clone!(canvases =>

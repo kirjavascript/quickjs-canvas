@@ -6,6 +6,7 @@
     let id = 0;
 
     const float = (num) => num + Number.EPSILON;
+    const int = (num) => Math.floor(num);
 
     class HTMLCanvasElement {
         constructor() {
@@ -20,22 +21,43 @@
             return new CanvasRenderingContext2D(this.id);
         };
 
+        #window;
+
         get window() {
-            return new Window(this.id);
+            if (!this.#window) {
+                this.#window = new Window(this.id);
+            }
+            return this.#window;
+        }
+
+        #width = 300;
+        #height = 150;
+
+        get width() {
+            return this.#width;
+        }
+
+        get height() {
+            return this.#height;
+        }
+
+        set width(prop) {
+            const width = int(prop)
+            if (width >= 0) {
+                this.#width = width;
+                QJSC_setSize(this.id, this.#width, this.#height);
+            }
+        }
+
+        set height(prop) {
+            const height = int(prop)
+            if (height >= 0) {
+                this.#height = height;
+                QJSC_setSize(this.id, this.#width, this.#height);
+            }
         }
 
         // style {backgroundColor, cursor}
-
-        // #width = 300;
-        // #height = 150;
-
-        // get width() {
-        //     return this.#width;
-        // }
-
-        // get height() {
-        //     return this.#height;
-        // }
 
         //toDataURL
         //toBlob
@@ -70,10 +92,10 @@
         }
 
         set title(prop) {
-            this.#title = prop;
-            QJSC_setTitle(this.id, String(prop));
+            this.#title = String(prop);
+            QJSC_setTitle(this.id, this.#title);
         }
-        // title
+
         // close
         // moveTo
 
