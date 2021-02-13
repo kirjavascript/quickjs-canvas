@@ -1,10 +1,9 @@
 ### dependencies
 
-`libsdl2-dev` (for now)
+`libsdl2-dev`
 
 ### TODO
 
-* switch to skulpin + static linked sdl
 * support full canvas API
 * resizing
 * add gumdrop
