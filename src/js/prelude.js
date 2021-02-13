@@ -24,6 +24,8 @@
             return new Window(this.id);
         }
 
+        // style {backgroundColor, cursor}
+
         // #width = 300;
         // #height = 150;
 

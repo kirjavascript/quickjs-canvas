@@ -40,6 +40,7 @@ impl CanvasWindow {
     }
 
     pub fn clear_rect(&mut self, x: f64, y: f64, w: f64, h: f64) {
+        // TODO: support backgroundColor
         self.canvas.set_draw_color(Color::RGB(255, 255, 255));
         self.canvas.fill_rect(Rect::new(x as i32, y as i32, w as u32, h as u32)).unwrap();
         self.dirty = true;
