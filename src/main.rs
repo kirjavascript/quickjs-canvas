@@ -34,13 +34,11 @@ fn main() {
 
     let sdl_context = sdl2::init().unwrap();
     let video = sdl_context.video().unwrap();
-    let ttf_context = sdl2::ttf::init().unwrap();
 
     // stick SDL stuff in a mutex so canvas can access it
 
     let sdl_env = Arc::new(Mutex::new(SDLEnv {
         video,
-        ttf_context,
     }));
 
     // attach QJSC controls to context
@@ -59,7 +57,7 @@ fn main() {
 
     let mut time = Instant::now();
     let mut event_pump = sdl_context.event_pump().unwrap();
-    let frame_size = Duration::from_micros(16667);
+    let frame_size = Duration::from_micros(16666);
     loop {
         for event in event_pump.poll_iter() {
             match event {

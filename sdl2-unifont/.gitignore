@@ -1,0 +1,10 @@
+# Rust default .gitignore contents
+/target
+**/*.rs.bk
+Cargo.lock
+
+# Emacs lockfiles
+**/.#*
+
+# build.rs outputs
+data/*.hex.xz

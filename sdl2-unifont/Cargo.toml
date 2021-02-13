@@ -1,0 +1,36 @@
+[package]
+name = "sdl2-unifont"
+version = "1.0.1"
+
+authors = ["Carl Albrecht <invlpg@protonmail.com>"]
+license = "GPL-3.0-or-later"
+
+description = "Embedded GNU Unifont for Rust SDL programs, for simple font rendering tasks"
+readme = "README.md"
+repository = "https://github.com/invlpg/sdl2-unifont"
+
+categories = ["gui", "rendering::data-formats"]
+keywords = ["text", "font", "sdl", "unicode", "unifont"]
+
+build = "build.rs"
+
+[features]
+# By default, we include the Basic Multilingual Plane, but not the Supplementary
+# plane. The SMP is generally only useful for emoji support, so only specify the
+# "plane-1" feature if you are expecting to need to render those.
+default = ["plane-0"]
+
+# Features to include the Unicode BMP or SMP
+plane-0 = []
+plane-1 = []
+
+[dependencies]
+sdl2 = "0.34.3"
+rust-lzma = "0.3.0"
+bit_field = "0.9.0"
+
+[build-dependencies]
+rust-lzma = "0.3.0"
+
+[dev-dependencies]
+lazy_static = "1.1.0"

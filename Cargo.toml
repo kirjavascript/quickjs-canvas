@@ -6,4 +6,5 @@ edition = "2018"
 
 [dependencies]
 quick-js = "0.3.6"
-sdl2 = { version = "0.34.3", features = ["bundled", "ttf", "gfx"] }
+sdl2 = { version = "0.34.3", features = ["bundled", "gfx"] }
+sdl2-unifont = { path = "./sdl2-unifont" } # modified to ensure sdl2_sys is in sync

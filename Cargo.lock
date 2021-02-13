@@ -22,6 +22,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cdb031dd78e28731d87d56cc8ffef4a8f36ca26c38fe2de700543e627f8a464a"
 
 [[package]]
+name = "bit_field"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ed8765909f9009617974ab6b7d332625b320b33c326b1e9321382ef1999b5d56"
+
+[[package]]
 name = "bitflags"
 version = "1.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -166,6 +172,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "13bd41f508810a131401606d54ac32a467c97172d74ba7662562ebba5ad07fa0"
 
 [[package]]
+name = "pkg-config"
+version = "0.3.19"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3831453b3449ceb48b6d9c7ad7c96d5ea673e9b470a1dc578c2ce6521230884c"
+
+[[package]]
 name = "quick-js"
 version = "0.3.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -181,6 +193,7 @@ version = "0.1.0"
 dependencies = [
  "quick-js",
  "sdl2",
+ "sdl2-unifont",
 ]
 
 [[package]]
@@ -211,6 +224,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b5eb417147ba9860a96cfe72a0b93bf88fee1744b5636ec99ab20c1aa9376581"
 
 [[package]]
+name = "rust-lzma"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "032cc29d0d39e6a19bd34b9ef9f23bbcf010d5572d1a4f6b6ed101ba492163f2"
+dependencies = [
+ "pkg-config",
+]
+
+[[package]]
 name = "sdl2"
 version = "0.34.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -236,6 +258,15 @@ dependencies = [
  "tar",
  "unidiff",
  "version-compare",
+]
+
+[[package]]
+name = "sdl2-unifont"
+version = "1.0.1"
+dependencies = [
+ "bit_field",
+ "rust-lzma",
+ "sdl2",
 ]
 
 [[package]]
