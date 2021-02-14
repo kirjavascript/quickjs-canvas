@@ -11,6 +11,8 @@ pub struct CanvasWindow {
     texture_creator: TextureCreator<WindowContext>,
     width: u32,
     height: u32,
+    fill_style: Color,
+    stroke_style: Color,
     dirty: bool,
 }
 
@@ -38,6 +40,8 @@ impl CanvasWindow {
             width,
             height,
             texture_creator,
+            fill_style: Color::RGB(0, 0, 0),
+            stroke_style: Color::RGB(0, 0, 0),
             dirty: true,
         }
     }
@@ -56,21 +60,21 @@ impl CanvasWindow {
     }
 
     pub fn fill_rect(&mut self, x: i32, y: i32, w: i32, h: i32) {
-        self.canvas.set_draw_color(Color::RGB(255, 0, 0));
+        self.canvas.set_draw_color(self.fill_style);
         self.canvas.fill_rect(Rect::new(x, y, w as u32, h as u32)).unwrap();
         self.dirty = true;
     }
 
     pub fn stroke_rect(&mut self, x: i32, y: i32, w: i32, h: i32) {
-        self.canvas.set_draw_color(Color::RGB(255, 0, 0));
+        self.canvas.set_draw_color(self.stroke_style);
         self.canvas.draw_rect(Rect::new(x, y, w as u32, h as u32)).unwrap();
         self.dirty = true;
     }
 
-    // WIP
+    // TODO: positioning, styles
     pub fn fill_text(&mut self, text: String, x: i32, y: i32) {
         let mut renderer =
-            SurfaceRenderer::new(Color::RGB(255, 0, 0), Color::RGBA(0, 0, 0, 0));
+            SurfaceRenderer::new(self.fill_style, Color::RGBA(0, 0, 0, 0));
 
         let mut screen = sdl2::surface::Surface::new(
             self.width,
