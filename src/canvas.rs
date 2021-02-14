@@ -42,8 +42,33 @@ impl CanvasWindow {
         }
     }
 
+    pub fn clear_rect(&mut self, x: i32, y: i32, w: i32, h: i32) {
+        // TODO: support backgroundColor
+        if x == 0 && y == 0 && w as u32 == self.width && h as u32 == self.height {
+            // will need to reset bg color
+            self.canvas.clear();
+        } else {
+            self.canvas.set_draw_color(Color::RGB(255, 255, 255));
+            self.canvas.fill_rect(Rect::new(x, y, w as u32, h as u32)).unwrap();
+
+        }
+        self.dirty = true;
+    }
+
+    pub fn fill_rect(&mut self, x: i32, y: i32, w: i32, h: i32) {
+        self.canvas.set_draw_color(Color::RGB(255, 0, 0));
+        self.canvas.fill_rect(Rect::new(x, y, w as u32, h as u32)).unwrap();
+        self.dirty = true;
+    }
+
+    pub fn stroke_rect(&mut self, x: i32, y: i32, w: i32, h: i32) {
+        self.canvas.set_draw_color(Color::RGB(255, 0, 0));
+        self.canvas.draw_rect(Rect::new(x, y, w as u32, h as u32)).unwrap();
+        self.dirty = true;
+    }
+
     // WIP
-    pub fn fill_text(&mut self, text: String, x: f64, y: f64) {
+    pub fn fill_text(&mut self, text: String, x: i32, y: i32) {
         let mut renderer =
             SurfaceRenderer::new(Color::RGB(255, 0, 0), Color::RGBA(0, 0, 0, 0));
 
@@ -56,7 +81,7 @@ impl CanvasWindow {
         renderer.bg_color = Color::RGBA(255, 255, 255, 0); // transparent BG
         renderer.bold = false;
         renderer.scale = 1;
-        renderer.draw(&text).unwrap().blit(None, &mut screen, Rect::new(x as _, y as _, 0, 0)).unwrap();
+        renderer.draw(&text).unwrap().blit(None, &mut screen, Rect::new(x, y, 0, 0)).unwrap();
 
         let text = self.texture_creator
             .create_texture_from_surface(screen)
@@ -65,20 +90,6 @@ impl CanvasWindow {
         self.dirty = true;
     }
 
-    // WIP
-    pub fn clear_rect(&mut self, x: f64, y: f64, w: f64, h: f64) {
-        // TODO: support backgroundColor
-        // TODO: change to ints
-        if x == 0. && y == 0. && w as u32 == self.width && h as u32 == self.height {
-            // will need to reset bg color
-            self.canvas.clear();
-        } else {
-            self.canvas.set_draw_color(Color::RGB(255, 255, 255));
-            self.canvas.fill_rect(Rect::new(x as i32, y as i32, w as u32, h as u32)).unwrap();
-
-        }
-        self.dirty = true;
-    }
 
     pub fn set_size(&mut self, width: i32, height: i32) {
         self.width = width as u32;

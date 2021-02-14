@@ -31,18 +31,34 @@ pub fn bind_js(
 
     // ctx methods
 
-    context.add_callback("QJSC_fillText", clone!(canvases =>
-        move |id: i32, text: String, x: f64, y: f64| {
+    context.add_callback("QJSC_clearRect", clone!(canvases =>
+        move |id: i32, x: i32, y: i32, w: i32, h: i32| {
             let mut canvases = canvases.lock().unwrap();
-            canvases.get_mut(&id).unwrap().fill_text(text, x, y);
+            canvases.get_mut(&id).unwrap().clear_rect(x, y, w, h);
             id
         }
      )).unwrap();
 
-    context.add_callback("QJSC_clearRect", clone!(canvases =>
-        move |id: i32, x: f64, y: f64, w: f64, h: f64| {
+    context.add_callback("QJSC_fillRect", clone!(canvases =>
+        move |id: i32, x: i32, y: i32, w: i32, h: i32| {
             let mut canvases = canvases.lock().unwrap();
-            canvases.get_mut(&id).unwrap().clear_rect(x, y, w, h);
+            canvases.get_mut(&id).unwrap().fill_rect(x, y, w, h);
+            id
+        }
+     )).unwrap();
+
+    context.add_callback("QJSC_strokeRect", clone!(canvases =>
+        move |id: i32, x: i32, y: i32, w: i32, h: i32| {
+            let mut canvases = canvases.lock().unwrap();
+            canvases.get_mut(&id).unwrap().stroke_rect(x, y, w, h);
+            id
+        }
+     )).unwrap();
+
+    context.add_callback("QJSC_fillText", clone!(canvases =>
+        move |id: i32, text: String, x: i32, y: i32| {
+            let mut canvases = canvases.lock().unwrap();
+            canvases.get_mut(&id).unwrap().fill_text(text, x, y);
             id
         }
      )).unwrap();

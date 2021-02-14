@@ -5,8 +5,8 @@
 
     let id = 0;
 
-    const float = (num) => num + Number.EPSILON;
-    const int = (num) => Math.floor(num);
+    // const float = (num) => num + Number.EPSILON;
+    const int = (num) => Math.round(num);
 
     class HTMLCanvasElement {
         constructor(width = 300, height = 150) {
@@ -72,11 +72,19 @@
             this.id = id;
         }
 
-        fillText(text, x, y) {
-            QJSC_fillText(this.id, String(text), float(x), float(y));
-        }
         clearRect(x, y, w, h) {
-            QJSC_clearRect(this.id, float(x), float(y), float(w), float(h));
+            QJSC_clearRect(this.id, int(x), int(y), int(w), int(h));
+        }
+        fillRect(x, y, w, h) {
+            QJSC_fillRect(this.id,  int(x), int(y), int(w), int(h));
+        }
+        strokeRect(x, y, w, h) {
+            QJSC_strokeRect(this.id,  int(x), int(y), int(w), int(h));
+        }
+
+
+        fillText(text, x, y) {
+            QJSC_fillText(this.id, String(text), int(x), int(y));
         }
 
         // clear [new]
