@@ -22,6 +22,6 @@ when built for release, all dependencies should be statically linked
 * everything else
 * setTimeout / setInterval
 * support full canvas API
-* interactive mode
+* file watching (hot reload)
 * cross compile for windows
 * --embed script.js --out file.exe

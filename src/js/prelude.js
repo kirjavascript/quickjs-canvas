@@ -102,7 +102,7 @@
         }
 
         set strokeStyle(color) {
-            this.#strokeStyle = QJSC_strokeStyle(this.id, String(color)) || this.fillStyle;
+            this.#strokeStyle = QJSC_strokeStyle(this.id, String(color)) || this.strokeStyle;
         }
     }
 
@@ -147,6 +147,8 @@
         // public
         Canvas: HTMLCanvasElement,
         requestAnimationFrame,
+        assertEq: (a, b) => { if (a !== b) throw new Error(`${a} != ${b}`); },
+        assert: (a) => { if (!a) throw new Error(a); },
         // private
         flushRAFQueue,
     });

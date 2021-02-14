@@ -99,7 +99,7 @@ impl CanvasWindow {
     }
 
     pub fn stroke_style(&mut self, color: Color) {
-        self.fill_style = color;
+        self.stroke_style = color;
     }
 
     pub fn set_size(&mut self, width: i32, height: i32) {
