@@ -1,4 +1,5 @@
 use crate::sdl_env::SDLEnv;
+use crate::text;
 use sdl2::pixels::Color;
 use sdl2::video::{Window, WindowContext};
 use sdl2::render::{Canvas, TextureCreator};
@@ -85,7 +86,7 @@ impl CanvasWindow {
         renderer.bg_color = Color::RGBA(255, 255, 255, 0); // transparent BG
         renderer.bold = false;
         renderer.scale = 1;
-        renderer.draw(&text).unwrap().blit(None, &mut screen, Rect::new(x, y, 0, 0)).unwrap();
+        renderer.draw(&text::to_canvas(&text)).unwrap().blit(None, &mut screen, Rect::new(x, y, 0, 0)).unwrap();
 
         let text = self.texture_creator
             .create_texture_from_surface(screen)

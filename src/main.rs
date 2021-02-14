@@ -4,6 +4,7 @@ mod canvas;
 mod clone;
 mod css_color;
 mod sdl_env;
+mod text;
 
 use sdl_env::SDLEnv;
 
