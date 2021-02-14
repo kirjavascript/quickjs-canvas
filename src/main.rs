@@ -40,6 +40,10 @@ fn main() {
     let sdl_context = sdl2::init().unwrap();
     let video = sdl_context.video().unwrap();
 
+    // disabled double buffering (fix flickering)
+
+    video.gl_attr().set_double_buffer(false);
+
     // stick SDL stuff in a mutex so canvas can access it
 
     let sdl_env = Arc::new(Mutex::new(SDLEnv {

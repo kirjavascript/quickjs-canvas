@@ -6,12 +6,12 @@ when built for release, all dependencies should be statically linked
 
 ### TODO
 
-* css colour parsing
 * support useful canvas API subset
+    * text
+    * paths
 * fix window closing
 * alert, prompt, confirm (use last focused window)
 * examples: zdog, d3-force
-* http://www.zebkit.org/dark/about.html
 * document features
 * events
 * object-inspect for debugging
@@ -19,9 +19,11 @@ when built for release, all dependencies should be statically linked
 * clipboard
 * IO
 * localStorage
-* everything else
+* btoa atob
 * setTimeout / setInterval
 * support full canvas API
 * file watching (hot reload)
+* Path2d
 * cross compile for windows
 * --embed script.js --out file.exe
+* http://www.zebkit.org/dark/about.html

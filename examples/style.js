@@ -5,7 +5,7 @@ canvas.window.title = 'fillStyle';
 
 ctx.fillStyle = '#AA2200';
 
-ctx.fillText('hello\n world', 0, 0);
+ctx.fillText('hello\n world', 0, 10);
 
 ctx.fillStyle = 'rebeccapurple';
 ctx.strokeStyle = 'lime';

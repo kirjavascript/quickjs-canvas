@@ -12,6 +12,7 @@ pub struct CanvasWindow {
     texture_creator: TextureCreator<WindowContext>,
     width: u32,
     height: u32,
+    background_color: Color,
     fill_style: Color,
     stroke_style: Color,
     dirty: bool,
@@ -40,6 +41,7 @@ impl CanvasWindow {
             canvas,
             width,
             height,
+            background_color: Color::RGB(255, 255, 255),
             texture_creator,
             fill_style: Color::RGB(0, 0, 0),
             stroke_style: Color::RGB(0, 0, 0),
@@ -48,12 +50,11 @@ impl CanvasWindow {
     }
 
     pub fn clear_rect(&mut self, x: i32, y: i32, w: i32, h: i32) {
-        // TODO: support backgroundColor
+        self.canvas.set_draw_color(self.background_color);
         if x == 0 && y == 0 && w as u32 == self.width && h as u32 == self.height {
             // will need to reset bg color
             self.canvas.clear();
         } else {
-            self.canvas.set_draw_color(Color::RGB(255, 255, 255));
             self.canvas.fill_rect(Rect::new(x, y, w as u32, h as u32)).unwrap();
 
         }
@@ -108,6 +109,7 @@ impl CanvasWindow {
         self.height = height as u32;
         self.canvas.window_mut().set_size(self.width, self.height)
             .expect("failed to set window size");
+        self.canvas.set_draw_color(self.background_color);
         self.canvas.clear();
         self.canvas.present();
     }
