@@ -94,6 +94,13 @@ impl CanvasWindow {
         self.dirty = true;
     }
 
+    pub fn fill_style(&mut self, color: Color) {
+        self.fill_style = color;
+    }
+
+    pub fn stroke_style(&mut self, color: Color) {
+        self.fill_style = color;
+    }
 
     pub fn set_size(&mut self, width: i32, height: i32) {
         self.width = width as u32;

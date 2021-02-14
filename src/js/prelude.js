@@ -82,12 +82,28 @@
             QJSC_strokeRect(this.id,  int(x), int(y), int(w), int(h));
         }
 
-
         fillText(text, x, y) {
             QJSC_fillText(this.id, String(text), int(x), int(y));
         }
 
-        // clear [new]
+        #fillStyle = '#000000';
+        #strokeStyle = '#000000';
+
+        get fillStyle() {
+            return this.#fillStyle;
+        }
+
+        set fillStyle(color) {
+            this.#fillStyle = QJSC_fillStyle(this.id, String(color)) || this.fillStyle;
+        }
+
+        get strokeStyle() {
+            return this.#strokeStyle;
+        }
+
+        set strokeStyle(color) {
+            this.#strokeStyle = QJSC_strokeStyle(this.id, String(color)) || this.fillStyle;
+        }
     }
 
     class Window {

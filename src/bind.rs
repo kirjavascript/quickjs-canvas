@@ -66,6 +66,30 @@ pub fn bind_js(
      )).unwrap();
 
 
+    context.add_callback("QJSC_fillStyle", clone!(canvases =>
+        move |id: i32, color: String| {
+            let mut canvases = canvases.lock().unwrap();
+            if let Some(color) = css_color::parse(&color) {
+                canvases.get_mut(&id).unwrap().fill_style(color);
+                JsValue::String(css_color::web_format(&color))
+            } else {
+                JsValue::Null
+            }
+        }
+     )).unwrap();
+
+    context.add_callback("QJSC_strokeStyle", clone!(canvases =>
+        move |id: i32, color: String| {
+            let mut canvases = canvases.lock().unwrap();
+            if let Some(color) = css_color::parse(&color) {
+                canvases.get_mut(&id).unwrap().stroke_style(color);
+                JsValue::String(css_color::web_format(&color))
+            } else {
+                JsValue::Null
+            }
+        }
+     )).unwrap();
+
     // window methods
 
     context.add_callback("QJSC_setTitle", clone!(canvases =>
@@ -75,9 +99,4 @@ pub fn bind_js(
             JsValue::Null
         }
      )).unwrap();
-
-    // println!("{:?}", css_color::parse("lime"));
-    // println!("{:?}", css_color::parse("rgba(128, 255, 255, 1)"));
-    println!("{:?}", css_color::web_format(&css_color::parse("lime").unwrap()));
-    println!("{:?}", css_color::web_format(&css_color::parse("rebeccapurple").unwrap()));
 }
