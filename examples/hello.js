@@ -1,4 +1,4 @@
-const canvas = new Canvas();
+const canvas = new Canvas(500, 400);
 const ctx = canvas.getContext('2d');
 
 ctx.fillText('hello world', 32, 48);

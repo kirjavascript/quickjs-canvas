@@ -10,13 +10,13 @@ pub fn bind_js(
     sdl_env: Arc<Mutex<SDLEnv>>,
     canvases: Arc<Mutex<HashMap<i32, CanvasWindow>>>,
 ) {
-
     // canvas methods
 
     context.add_callback("QJSC_initCanvas", clone!(canvases =>
-        move |id: i32| {
+        move |id: i32, width: i32, height: i32| {
             let sdl_env = sdl_env.lock().unwrap();
-            canvases.lock().unwrap().insert(id, CanvasWindow::new(&sdl_env));
+            let canvas = CanvasWindow::new(&sdl_env, width as _, height as _);
+            canvases.lock().unwrap().insert(id, canvas);
             id
         }
      )).unwrap();
@@ -46,7 +46,6 @@ pub fn bind_js(
             id
         }
      )).unwrap();
-
 
     // window methods
 

@@ -14,9 +14,7 @@ pub struct CanvasWindow {
 }
 
 impl CanvasWindow {
-    pub fn new(sdl_env: &SDLEnv) -> Self {
-        let width = 300;
-        let height = 150;
+    pub fn new(sdl_env: &SDLEnv, width: u32, height: u32) -> Self {
         let window = sdl_env.video.window("quickjs-canvas", width, height)
             .position_centered()
             .opengl()

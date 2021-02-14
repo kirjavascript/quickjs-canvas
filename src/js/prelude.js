@@ -9,9 +9,9 @@
     const int = (num) => Math.floor(num);
 
     class HTMLCanvasElement {
-        constructor() {
+        constructor(width = 300, height = 150) {
             this.id = id++;
-            QJSC_initCanvas(this.id);
+            QJSC_initCanvas(this.id, int(width), int(height));
         }
 
         getContext(type) {
