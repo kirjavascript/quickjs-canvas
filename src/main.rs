@@ -56,7 +56,11 @@ fn main() {
 
     eval(&code);
 
-    // TODO: if no canvases created, exit
+    // if no canvases created, exit at this point
+
+    if canvases.lock().unwrap().len() == 0 {
+        std::process::exit(0);
+    }
 
     // event loop
 
