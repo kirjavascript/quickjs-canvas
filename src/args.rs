@@ -24,7 +24,7 @@ pub fn read_file(path: &str) -> Result<String, Error> {
 pub fn get_script() -> String {
     let args = Args::parse_args_default_or_exit();
 
-    if args.eval.is_none() || !args.file.is_none() {
+    if args.eval.is_none() && args.file.is_none() {
         println!("{}", Args::usage());
         std::process::exit(0);
     }

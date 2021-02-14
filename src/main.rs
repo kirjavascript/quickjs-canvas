@@ -56,6 +56,8 @@ fn main() {
 
     eval(&code);
 
+    // TODO: if no canvases created, exit
+
     // event loop
 
     let mut time = Instant::now();

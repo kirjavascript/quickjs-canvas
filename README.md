@@ -4,7 +4,6 @@
 
 ### TODO
 
-* add gumdrop + examples directory
 * support useful canvas API subset
 * document features
 * events
