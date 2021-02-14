@@ -11,7 +11,9 @@
     class HTMLCanvasElement {
         constructor(width = 300, height = 150) {
             this.id = id++;
-            QJSC_initCanvas(this.id, int(width), int(height));
+            this.#width = int(width);
+            this.#height = int(height);
+            QJSC_initCanvas(this.id, this.#width, this.#height);
         }
 
         getContext(type) {
@@ -30,8 +32,8 @@
             return this.#window;
         }
 
-        #width = 300;
-        #height = 150;
+        #width;
+        #height;
 
         get width() {
             return this.#width;

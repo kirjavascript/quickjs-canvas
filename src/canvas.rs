@@ -11,6 +11,7 @@ pub struct CanvasWindow {
     texture_creator: TextureCreator<WindowContext>,
     width: u32,
     height: u32,
+    dirty: bool,
 }
 
 impl CanvasWindow {
@@ -37,9 +38,11 @@ impl CanvasWindow {
             width,
             height,
             texture_creator,
+            dirty: true,
         }
     }
 
+    // WIP
     pub fn fill_text(&mut self, text: String, x: f64, y: f64) {
         let mut renderer =
             SurfaceRenderer::new(Color::RGB(255, 0, 0), Color::RGBA(0, 0, 0, 0));
@@ -59,8 +62,10 @@ impl CanvasWindow {
             .create_texture_from_surface(screen)
             .unwrap();
         self.canvas.copy(&text, None, None).unwrap();
+        self.dirty = true;
     }
 
+    // WIP
     pub fn clear_rect(&mut self, x: f64, y: f64, w: f64, h: f64) {
         // TODO: support backgroundColor
         // TODO: change to ints
@@ -72,6 +77,7 @@ impl CanvasWindow {
             self.canvas.fill_rect(Rect::new(x as i32, y as i32, w as u32, h as u32)).unwrap();
 
         }
+        self.dirty = true;
     }
 
     pub fn set_size(&mut self, width: i32, height: i32) {
@@ -88,6 +94,9 @@ impl CanvasWindow {
     }
 
     pub fn render(&mut self) {
-        self.canvas.present();
+        if self.dirty {
+            self.canvas.present();
+            self.dirty = false;
+        }
     }
 }
