@@ -1,6 +1,7 @@
 use quick_js::{Context, JsValue};
 use crate::sdl_env::SDLEnv;
 use crate::canvas::CanvasWindow;
+use crate::css_color;
 use crate::clone;
 use std::sync::{Arc, Mutex};
 use std::collections::HashMap;
@@ -74,4 +75,9 @@ pub fn bind_js(
             JsValue::Null
         }
      )).unwrap();
+
+    // println!("{:?}", css_color::parse("lime"));
+    // println!("{:?}", css_color::parse("rgba(128, 255, 255, 1)"));
+    println!("{:?}", css_color::web_format(&css_color::parse("lime").unwrap()));
+    println!("{:?}", css_color::web_format(&css_color::parse("rebeccapurple").unwrap()));
 }

@@ -1,4 +1,4 @@
-const canvas = new Canvas(800, 600);
+const canvas = new Canvas(400, 400);
 const ctx = canvas.getContext('2d');
 
 canvas.window.title = 'ctx text';

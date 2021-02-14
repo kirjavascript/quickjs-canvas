@@ -2,6 +2,7 @@ mod args;
 mod bind;
 mod canvas;
 mod clone;
+mod css_color;
 mod sdl_env;
 
 use sdl_env::SDLEnv;
