@@ -10,6 +10,7 @@ use sdl2_unifont::renderer::SurfaceRenderer;
 pub struct CanvasWindow {
     canvas: Canvas<Window>,
     texture_creator: TextureCreator<WindowContext>,
+    font_renderer: SurfaceRenderer,
     width: u32,
     height: u32,
     background_color: Color,
@@ -37,12 +38,18 @@ impl CanvasWindow {
 
         let texture_creator = canvas.texture_creator();
 
+        let font_renderer = SurfaceRenderer::new(
+            Color::RGBA(0, 0, 0, 0),
+            Color::RGBA(0, 0, 0, 0),
+        );
+
         Self {
             canvas,
+            texture_creator,
+            font_renderer,
             width,
             height,
             background_color: Color::RGB(255, 255, 255),
-            texture_creator,
             fill_style: Color::RGB(0, 0, 0),
             stroke_style: Color::RGB(0, 0, 0),
             dirty: true,
@@ -75,19 +82,20 @@ impl CanvasWindow {
 
     // TODO: positioning, styles
     pub fn fill_text(&mut self, text: String, x: i32, y: i32) {
-        let mut renderer =
-            SurfaceRenderer::new(self.fill_style, Color::RGBA(0, 0, 0, 0));
-
         let mut screen = sdl2::surface::Surface::new(
             self.width,
             self.height,
             sdl2::pixels::PixelFormatEnum::RGBA8888,
         ).unwrap();
 
-        renderer.bg_color = Color::RGBA(255, 255, 255, 0); // transparent BG
-        renderer.bold = false;
-        renderer.scale = 1;
-        renderer.draw(&text::to_canvas(&text)).unwrap().blit(None, &mut screen, Rect::new(x, y, 0, 0)).unwrap();
+        self.font_renderer.fg_color = self.fill_style; // transparent BG
+        // renderer.bg_color = Color::RGBA(255, 255, 255, 0); // transparent BG
+        // renderer.bold = false;
+        self.font_renderer.scale = 1;
+        self.font_renderer
+            .draw(&text::to_canvas(&text))
+            .unwrap()
+            .blit(None, &mut screen, Rect::new(x, y, 0, 0)).unwrap();
 
         let text = self.texture_creator
             .create_texture_from_surface(screen)

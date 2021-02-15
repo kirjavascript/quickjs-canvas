@@ -40,7 +40,7 @@ fn main() {
     let sdl_context = sdl2::init().unwrap();
     let video = sdl_context.video().unwrap();
 
-    // disabled double buffering (fix flickering)
+    // disable double buffering
 
     video.gl_attr().set_double_buffer(false);
 
