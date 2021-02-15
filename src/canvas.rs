@@ -90,8 +90,8 @@ impl CanvasWindow {
 
         self.font_renderer.fg_color = self.fill_style; // transparent BG
         // renderer.bg_color = Color::RGBA(255, 255, 255, 0); // transparent BG
-        // renderer.bold = false;
-        self.font_renderer.scale = 1;
+        // self.font_renderer.bold = true;
+        // self.font_renderer.scale = 1;
         self.font_renderer
             .draw(&text::to_canvas(&text))
             .unwrap()

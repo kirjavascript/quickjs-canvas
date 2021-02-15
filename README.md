@@ -7,8 +7,8 @@ when built for release, all dependencies should be statically linked
 ### TODO
 
 * support useful canvas API subset
-    * text
     * paths
+    * text
 * fix window closing
 * alert, prompt, confirm (use last focused window)
 * examples: zdog, d3-force
