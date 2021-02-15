@@ -1,11 +1,16 @@
+try the examples;
+
+```bash
+cargo run --release -- --file examples/hello.js
+```
+
 ### development dependencies
 
 `libsdl2-dev liblzma-dev`
 
-when built for release, all dependencies should be statically linked
-
 ### TODO
 
+* performance.now() / first param to rAF
 * support useful canvas API subset
     * paths
     * text
@@ -26,4 +31,7 @@ when built for release, all dependencies should be statically linked
 * Path2d
 * cross compile for windows
 * --embed script.js --out file.exe
+* make "bundled", "static-link" work with sdl2_gfx
+* nanovg
+* --png
 * http://www.zebkit.org/dark/about.html

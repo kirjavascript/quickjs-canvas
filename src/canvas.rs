@@ -97,6 +97,10 @@ impl CanvasWindow {
             .unwrap()
             .blit(None, &mut screen, Rect::new(x, y, 0, 0)).unwrap();
 
+        // self.canvas.rectangle(0, 0, 10, 10, self.fill_style);
+
+        // screen.rotozoom(90., 2., true);
+
         let text = self.texture_creator
             .create_texture_from_surface(screen)
             .unwrap();

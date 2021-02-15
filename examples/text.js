@@ -3,7 +3,7 @@ const ctx = canvas.getContext('2d');
 
 canvas.window.title = 'text';
 
-ctx.fillStyle = '#AA2200';
+ctx.fillStyle = 'purple';
 ctx.fillText('hello\n world', 0, 10);
 ctx.fillText('Hᴇʟʟᴏ ᴛᴇxᴛ', 0, 20);
 ctx.fillText('HELLO TEXT', 0, 30);

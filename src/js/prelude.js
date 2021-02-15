@@ -4,6 +4,7 @@
     // https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement
 
     let id = 0;
+    const initialTime = Date.now();
 
     // const float = (num) => num + Number.EPSILON;
     const int = (num) => Math.round(num);
@@ -128,7 +129,13 @@
 
     }
 
-    // alert() global
+    // alert()
+
+    const performance = {
+        now: function () {
+            return Date.now() - initialTime;
+        },
+    };
 
     const frameQueue = [];
 
@@ -139,7 +146,7 @@
     function flushRAFQueue() {
         const processQueue = frameQueue.splice(0, frameQueue.length);
         while (processQueue.length > 0) {
-            processQueue.pop()();
+            processQueue.pop()(performance.now());
         }
     }
 
@@ -147,6 +154,7 @@
         // public
         Canvas: HTMLCanvasElement,
         requestAnimationFrame,
+        performance,
         assertEq: (a, b) => { if (a !== b) throw new Error(`${a} != ${b}`); },
         assert: (a) => { if (!a) throw new Error(a); },
         // private
