@@ -105,6 +105,41 @@
         set strokeStyle(color) {
             this.#strokeStyle = QJSC_strokeStyle(this.id, String(color)) || this.strokeStyle;
         }
+
+        #path = [];
+        #currentPath;
+
+        beginPath() {
+            this.#path = [];
+            this.currentPath = undefined;
+        }
+
+        moveTo(x, y) {
+            const newPath = [[x, y]];
+            this.#currentPath = newPath;
+            this.#path.push(newPath);
+        }
+
+        lineTo(x, y) {
+            if (this.#currentPath) {
+                this.#currentPath.push([x, y]);
+            } else {
+                // TODO: find what to do
+            }
+        }
+
+        closePath() {
+            if (this.#currentPath) {
+
+            }
+        }
+
+        stroke() {
+            // interop
+        }
+        fill() {
+            // interop
+        }
     }
 
     class Window {

@@ -10,13 +10,13 @@ cargo run --release -- --file examples/hello.js
 
 ### TODO
 
-* performance.now() / first param to rAF
+* try surfman with pathfinder
+* alert, prompt, confirm (use last focused window)
 * support useful canvas API subset
     * paths
     * text
 * fix window closing
-* alert, prompt, confirm (use last focused window)
-* examples: zdog, d3-force
+* examples: zdog, d3-force, moveTo breakout
 * document features
 * events
 * object-inspect for debugging
@@ -31,7 +31,8 @@ cargo run --release -- --file examples/hello.js
 * Path2d
 * cross compile for windows
 * --embed script.js --out file.exe
+* --png
 * make "bundled", "static-link" work with sdl2_gfx
 * nanovg
-* --png
+* orbfont
 * http://www.zebkit.org/dark/about.html
