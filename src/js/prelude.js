@@ -164,8 +164,6 @@
 
     }
 
-    // alert()
-
     const performance = {
         now: function () {
             return Date.now() - initialTime;
@@ -185,11 +183,21 @@
         }
     }
 
+    function alert(text) {
+        return QJSC_msgBox("alert", String(text));
+    }
+
+    function confirm(text) {
+        return QJSC_msgBox("confirm", String(text));
+    }
+
     Object.assign(globalThis, {
         // public
         Canvas: HTMLCanvasElement,
         requestAnimationFrame,
         performance,
+        alert,
+        confirm,
         assertEq: (a, b) => { if (a !== b) throw new Error(`${a} != ${b}`); },
         assert: (a) => { if (!a) throw new Error(a); },
         // private

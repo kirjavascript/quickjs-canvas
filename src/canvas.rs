@@ -136,4 +136,8 @@ impl CanvasWindow {
             self.dirty = false;
         }
     }
+
+    pub fn window(&self) -> &Window {
+        self.canvas.window()
+    }
 }

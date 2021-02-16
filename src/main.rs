@@ -3,6 +3,7 @@ mod bind;
 mod canvas;
 mod clone;
 mod css_color;
+mod msg_box;
 mod sdl_env;
 mod text;
 

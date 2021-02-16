@@ -2,6 +2,7 @@ use quick_js::{Context, JsValue};
 use crate::sdl_env::SDLEnv;
 use crate::canvas::CanvasWindow;
 use crate::css_color;
+use crate::msg_box;
 use crate::clone;
 use std::sync::{Arc, Mutex};
 use std::collections::HashMap;
@@ -97,6 +98,23 @@ pub fn bind_js(
             let mut canvases = canvases.lock().unwrap();
             canvases.get_mut(&id).unwrap().set_title(text);
             JsValue::Null
+        }
+     )).unwrap();
+
+    // other stuff
+
+    context.add_callback("QJSC_msgBox", clone!(canvases =>
+        move |_type: String, text: String| {
+            let canvases = canvases.lock().unwrap();
+            match canvases.values().next() {
+                Some(canvas) if _type == "alert" => {
+                    msg_box::alert(canvas.window(), &text)
+                }
+                Some(canvas) if _type == "confirm" => {
+                    msg_box::confirm(canvas.window(), &text)
+                },
+                _ => false
+            }
         }
      )).unwrap();
 }

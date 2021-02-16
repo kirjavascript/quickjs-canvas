@@ -10,8 +10,6 @@ cargo run --release -- --file examples/hello.js
 
 ### TODO
 
-* try surfman with pathfinder
-* alert, prompt, confirm (use last focused window)
 * support useful canvas API subset
     * paths
     * text
@@ -30,6 +28,7 @@ cargo run --release -- --file examples/hello.js
 * file watching (hot reload)
 * Path2d
 * cross compile for windows
+* prompt()
 * --embed script.js --out file.exe
 * --png
 * make "bundled", "static-link" work with sdl2_gfx

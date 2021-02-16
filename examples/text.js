@@ -8,7 +8,6 @@ ctx.fillText('hello\n world', 0, 10);
 ctx.fillText('Hᴇʟʟᴏ ᴛᴇxᴛ', 0, 20);
 ctx.fillText('HELLO TEXT', 0, 30);
 
-
 // stroke
 // measure
 // font styles
