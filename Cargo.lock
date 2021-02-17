@@ -126,9 +126,9 @@ checksum = "7ccac4b00700875e6a07c6cde370d44d32fa01c5a65cdd2fca6858c479d28bb3"
 
 [[package]]
 name = "libquickjs-sys"
-version = "0.8.0"
+version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dee9a02aea83ebcdfbec6f733bbe58f4d29d7555f66757f1e83249e5697df3ba"
+checksum = "3f0b24e9bd171b75ae0295bd428fb8fe58410fb23156e5f34a4657a70c3cee96"
 dependencies = [
  "cc",
  "copy_dir",
@@ -163,9 +163,9 @@ dependencies = [
 
 [[package]]
 name = "quick-js"
-version = "0.3.6"
+version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "82ee8e0c66741f82cbdf0b3148887041dcf1de2b592717ae38ab09d0d08a0c15"
+checksum = "b3c9c9e9db25ecaa383d4a8b701c35f861380ebc404c1801dd1bb46dc34e7dbe"
 dependencies = [
  "libquickjs-sys",
  "once_cell",

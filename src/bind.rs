@@ -91,6 +91,17 @@ pub fn bind_js(
         }
      )).unwrap();
 
+    // context.add_callback("QJSC_fill", clone!(canvases =>
+    //     move |id: i32, path: JsValue| {
+    //         let mut canvases = canvases.lock().unwrap();
+    //         // if let JsValue::Array(vec) = path {
+    //         //     let q: <Vec<JsValue> = vec;
+    //         // }
+    //         // canvases.get_mut(&id).unwrap().fill_text(text, x, y);
+    //         JsValue::Null
+    //     }
+    //  )).unwrap();
+
     // window methods
 
     context.add_callback("QJSC_setTitle", clone!(canvases =>
@@ -106,13 +117,9 @@ pub fn bind_js(
     context.add_callback("QJSC_msgBox", clone!(canvases =>
         move |_type: String, text: String| {
             let canvases = canvases.lock().unwrap();
-            match canvases.values().next() {
-                Some(canvas) if _type == "alert" => {
-                    msg_box::alert(canvas.window(), &text)
-                }
-                Some(canvas) if _type == "confirm" => {
-                    msg_box::confirm(canvas.window(), &text)
-                },
+            match (canvases.values().next(), _type.as_ref()) {
+                (Some(canvas), "alert") => msg_box::alert(canvas.window(), &text),
+                (Some(canvas), "confirm") => msg_box::confirm(canvas.window(), &text),
                 _ => false
             }
         }

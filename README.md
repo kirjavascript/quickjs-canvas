@@ -28,10 +28,10 @@ cargo run --release -- --file examples/hello.js
 * file watching (hot reload)
 * Path2d
 * cross compile for windows
-* prompt()
-* --embed script.js --out file.exe
 * --png
+* --embed script.js --out file.exe
 * make "bundled", "static-link" work with sdl2_gfx
+* prompt()
 * nanovg
 * orbfont
 * http://www.zebkit.org/dark/about.html

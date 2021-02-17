@@ -115,30 +115,33 @@
         }
 
         moveTo(x, y) {
-            const newPath = [[x, y]];
+            const newPath = [[int(x), int(y)]];
             this.#currentPath = newPath;
             this.#path.push(newPath);
         }
 
         lineTo(x, y) {
             if (this.#currentPath) {
-                this.#currentPath.push([x, y]);
+                this.#currentPath.push([int(x), int(y)]);
             } else {
-                // TODO: find what to do
+                this.moveTo(x, y);
             }
         }
 
         closePath() {
             if (this.#currentPath) {
-
+                this.#currentPath.push(this.#currentPath[0]);
+                this.#currentPath = undefined;
             }
         }
 
         stroke() {
-            // interop
+            QJSC_stroke(this.id, this.#path);
+            this.beginPath();
         }
         fill() {
-            // interop
+            QJSC_fill(this.id, this.#path);
+            this.beginPath();
         }
     }
 
@@ -184,11 +187,11 @@
     }
 
     function alert(text) {
-        return QJSC_msgBox("alert", String(text));
+        QJSC_msgBox("alert", String(text || ''));
     }
 
     function confirm(text) {
-        return QJSC_msgBox("confirm", String(text));
+        return QJSC_msgBox("confirm", String(text || ''));
     }
 
     Object.assign(globalThis, {

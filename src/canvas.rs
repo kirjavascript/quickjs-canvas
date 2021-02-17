@@ -43,6 +43,8 @@ impl CanvasWindow {
             Color::RGBA(0, 0, 0, 0),
         );
 
+        // canvas.filled_polygon(&vec![10,200,200,10], &vec![10,100,10,100], Color::RGB(0, 0, 0));
+
         Self {
             canvas,
             texture_creator,
