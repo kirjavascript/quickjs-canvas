@@ -11,12 +11,13 @@ cargo run --release -- --file examples/hello.js
 ### TODO
 
 * support useful canvas API subset
-    * paths
-    * text
-* fix window closing
-* examples: zdog, d3-force, moveTo breakout
-* document features
+    * improve text implementation (try orbfont)
+    * arc
+    * curves
 * events
+* fix window closing
+* examples: zdog, d3-force, window.moveTo breakout
+* document features
 * object-inspect for debugging
 * fetch
 * clipboard
@@ -33,5 +34,4 @@ cargo run --release -- --file examples/hello.js
 * make "bundled", "static-link" work with sdl2_gfx
 * prompt()
 * nanovg
-* orbfont
 * http://www.zebkit.org/dark/about.html

@@ -4,6 +4,7 @@ mod canvas;
 mod clone;
 mod css_color;
 mod msg_box;
+mod path;
 mod sdl_env;
 mod text;
 

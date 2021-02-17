@@ -1,8 +1,9 @@
-use quick_js::{Context, JsValue};
+use quick_js::{Context, JsValue, Arguments};
 use crate::sdl_env::SDLEnv;
 use crate::canvas::CanvasWindow;
 use crate::css_color;
 use crate::msg_box;
+use crate::path::Path;
 use crate::clone;
 use std::sync::{Arc, Mutex};
 use std::collections::HashMap;
@@ -91,16 +92,18 @@ pub fn bind_js(
         }
      )).unwrap();
 
-    // context.add_callback("QJSC_fill", clone!(canvases =>
-    //     move |id: i32, path: JsValue| {
-    //         let mut canvases = canvases.lock().unwrap();
-    //         // if let JsValue::Array(vec) = path {
-    //         //     let q: <Vec<JsValue> = vec;
-    //         // }
-    //         // canvases.get_mut(&id).unwrap().fill_text(text, x, y);
-    //         JsValue::Null
-    //     }
-    //  )).unwrap();
+    context.add_callback("QJSC_fill", clone!(canvases =>
+        move |args: Arguments| {
+            let mut canvases = canvases.lock().unwrap();
+            let mut args = args.into_vec().into_iter();
+            if let JsValue::Int(id) = args.next().unwrap() {
+                let paths = args.next().unwrap();
+                let paths = Path::from_args(paths);
+                // canvases.get_mut(&id).unwrap().fill_text(text, x, y);
+            }
+            JsValue::Null
+        }
+     )).unwrap();
 
     // window methods
 
