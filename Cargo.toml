@@ -5,7 +5,7 @@ authors = ["kirjavascript"]
 edition = "2018"
 
 [dependencies]
-quick-js = "0.4.0"
+quick-js = { git = "https://github.com/theduke/quickjs-rs.git", rev = "05998ab82f1eae0e1deb6d2b5a8356c63baa4e81" }
 gumdrop = "0.8.0"
 css-color = "0.1"
 sdl2 = { version = "0.34.3", features = ["gfx"] }

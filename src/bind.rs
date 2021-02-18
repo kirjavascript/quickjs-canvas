@@ -93,14 +93,11 @@ pub fn bind_js(
      )).unwrap();
 
     context.add_callback("QJSC_fill", clone!(canvases =>
-        move |args: Arguments| {
+        move |id: i32, paths: Vec<Vec<Vec<i32>>>| {
             let mut canvases = canvases.lock().unwrap();
-            let mut args = args.into_vec().into_iter();
-            if let JsValue::Int(id) = args.next().unwrap() {
-                let paths = args.next().unwrap();
-                let paths = Path::from_args(paths);
-                // canvases.get_mut(&id).unwrap().fill_text(text, x, y);
-            }
+            let paths = Path::from_interop(paths);
+            //     println!("{:?}", paths);
+            //     // canvases.get_mut(&id).unwrap().fill_text(text, x, y);
             JsValue::Null
         }
      )).unwrap();

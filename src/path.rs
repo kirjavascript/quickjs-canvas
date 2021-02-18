@@ -1,40 +1,18 @@
-use quick_js::JsValue;
-
+#[derive(Debug)]
 pub struct Path(Vec<(i32, i32)>);
 
-
 impl Path {
-    pub fn from_args(paths: JsValue) -> Vec<Path> {
-        value_to_vec(paths).into_iter().map(|path| {
-            Path(value_to_vec(path).into_iter().map(value_to_point).collect())
+    pub fn from_interop(paths: Vec<Vec<Vec<i32>>>) -> Vec<Path> {
+        paths.into_iter().map(|path| {
+            Path(path.into_iter().map(vec_to_point).collect())
         }).collect()
     }
 }
 
-fn value_to_vec(arr: JsValue) -> Vec<JsValue> {
-    if let JsValue::Array(vec) = arr {
-        vec
-    } else {
-        vec![]
-    }
-}
-
-fn value_to_point(arr: JsValue) -> (i32, i32) {
-    if let JsValue::Array(vec) = arr {
-        let mut iter = vec.into_iter();
-        (
-            if let JsValue::Int(int) = iter.next().expect("missing point") {
-                int
-            } else {
-                unreachable!("bad interop data");
-            },
-            if let JsValue::Int(int) = iter.next().expect("missing point") {
-                int
-            } else {
-                unreachable!("bad interop data");
-            }
-        )
-    } else {
-        unreachable!("bad interop data");
-    }
+fn vec_to_point(vec: Vec<i32>) -> (i32, i32) {
+    let mut iter = vec.into_iter();
+    (
+        iter.next().expect("missing point"),
+        iter.next().expect("missing point"),
+    )
 }
