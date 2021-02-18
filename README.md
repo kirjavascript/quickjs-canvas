@@ -14,6 +14,7 @@ cargo run --release -- --file examples/hello.js
     * improve text implementation (try orbfont)
     * arc
     * curves
+* try out cairo instead (check node-canvas for examples)
 * events
 * fix window closing
 * examples: zdog, d3-force, window.moveTo breakout
@@ -34,4 +35,8 @@ cargo run --release -- --file examples/hello.js
 * make "bundled", "static-link" work with sdl2_gfx
 * prompt()
 * nanovg
-* http://www.zebkit.org/dark/about.html
+
+#### libs to consider
+
+https://crates.io/crates/enum-as-inner
+http://www.zebkit.org/dark/about.html

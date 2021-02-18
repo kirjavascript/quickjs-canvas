@@ -1,4 +1,4 @@
-use quick_js::{Context, JsValue, Arguments};
+use quick_js::{Context, JsValue};
 use crate::sdl_env::SDLEnv;
 use crate::canvas::CanvasWindow;
 use crate::css_color;
@@ -96,8 +96,9 @@ pub fn bind_js(
         move |id: i32, paths: Vec<Vec<Vec<i32>>>| {
             let mut canvases = canvases.lock().unwrap();
             let paths = Path::from_interop(paths);
-            //     println!("{:?}", paths);
-            //     // canvases.get_mut(&id).unwrap().fill_text(text, x, y);
+            for path in paths {
+                canvases.get_mut(&id).unwrap().fill_path(path);
+            }
             JsValue::Null
         }
      )).unwrap();

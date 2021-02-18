@@ -1,7 +1,9 @@
 const canvas = new Canvas();
 const ctx = canvas.getContext('2d');
 
-// canvas.window.title = 'path';
+canvas.window.title = 'path';
+
+ctx.fillStyle="steelblue";
 
 ctx.beginPath();
 ctx.moveTo(10,10);

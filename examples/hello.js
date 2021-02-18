@@ -7,3 +7,5 @@ const canvas2 = new Canvas();
 const ctx2 = canvas2.getContext('2d');
 
 ctx2.fillText('goodbye world', 32, 48);
+
+alert('Hello world');

@@ -1,5 +1,6 @@
 use crate::sdl_env::SDLEnv;
 use crate::text;
+use crate::path::Path;
 use sdl2::pixels::Color;
 use sdl2::video::{Window, WindowContext};
 use sdl2::render::{Canvas, TextureCreator};
@@ -43,8 +44,6 @@ impl CanvasWindow {
             Color::RGBA(0, 0, 0, 0),
         );
 
-        // canvas.filled_polygon(&vec![10,200,200,10], &vec![10,100,10,100], Color::RGB(0, 0, 0));
-
         Self {
             canvas,
             texture_creator,
@@ -56,6 +55,14 @@ impl CanvasWindow {
             stroke_style: Color::RGB(0, 0, 0),
             dirty: true,
         }
+    }
+
+    pub fn fill_path(&mut self, path: Path) {
+        self.canvas.filled_polygon(
+            path.get_x_points().as_slice(),
+            path.get_y_points().as_slice(),
+            self.fill_style
+        ).unwrap();
     }
 
     pub fn clear_rect(&mut self, x: i32, y: i32, w: i32, h: i32) {
@@ -98,10 +105,6 @@ impl CanvasWindow {
             .draw(&text::to_canvas(&text))
             .unwrap()
             .blit(None, &mut screen, Rect::new(x, y, 0, 0)).unwrap();
-
-        // self.canvas.rectangle(0, 0, 10, 10, self.fill_style);
-
-        // screen.rotozoom(90., 2., true);
 
         let text = self.texture_creator
             .create_texture_from_surface(screen)
