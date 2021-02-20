@@ -3,6 +3,7 @@ mod bind;
 mod canvas;
 mod clone;
 mod css_color;
+mod events;
 mod msg_box;
 mod path;
 mod sdl_env;
@@ -15,8 +16,6 @@ use std::sync::{Arc, Mutex};
 use std::time::{Instant, Duration};
 
 use quick_js::{Context, JsValue, console::Level};
-use sdl2::event::{Event, WindowEvent};
-use sdl2::keyboard::Keycode;
 
 fn main() {
     let code = args::get_script();
@@ -64,31 +63,25 @@ fn main() {
 
     eval(&code);
 
-    // if no canvases created, exit at this point
-
-    if canvases.lock().unwrap().len() == 0 {
-        std::process::exit(0);
-    }
-
     // event loop
 
     let mut time = Instant::now();
     let mut event_pump = sdl_context.event_pump().unwrap();
     let frame_size = Duration::from_micros(16666);
     loop {
-        for event in event_pump.poll_iter() {
-            match event {
-                Event::Quit {..} | Event::KeyDown { keycode: Some(Keycode::Escape), .. } => return,
-                Event::Window { win_event: WindowEvent::Exposed, .. } => {
-                },
-                _ => {}
-            }
+        let mut canvases = canvases.lock().unwrap();
+
+        if canvases.len() == 0 || !events::poll_events(&mut event_pump, &context) {
+            return
         }
 
         let args: Vec<i32> = vec![];
-        context.call_function("flushRAFQueue", args).unwrap();
+        if let Err(err) = context.call_function("flushRAFQueue", args) {
+            eprintln!("{:?}", err);
+        };
 
-        for (_, canvas) in canvases.lock().unwrap().iter_mut() {
+
+        for (_, canvas) in canvases.iter_mut() {
             canvas.render();
         }
 

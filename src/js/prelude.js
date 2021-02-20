@@ -1,7 +1,6 @@
 'use strict';
 
 (function() {
-    // https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement
 
     const initialTime = Date.now();
 
@@ -15,6 +14,15 @@
             this.#width = int(width);
             this.#height = int(height);
             this.#id = QJSC_initCanvas(this.#width, this.#height);
+
+            subscribe(this.#id, (type, event) => {
+                if (this.#listeners.has(type)) {
+                    this.#listeners.get(type)
+                        .forEach((callback) => {
+                            callback(event);
+                        });
+                }
+            });
         }
 
         getContext(type) {
@@ -28,7 +36,7 @@
 
         get window() {
             if (!this.#window) {
-                this.#window = new Window(this.#id);
+                this.#window = new Window(this.#id, this);
             }
             return this.#window;
         }
@@ -45,7 +53,7 @@
         }
 
         set width(prop) {
-            const width = int(prop)
+            const width = int(prop);
             if (width >= 0) {
                 this.#width = width;
                 QJSC_setSize(this.#id, this.#width, this.#height);
@@ -60,14 +68,21 @@
             }
         }
 
-        #events = new Map();
+        #listeners = new Map();
 
-        addEventListener() {
-
+        addEventListener(type, listener) {
+            if (this.#listeners.has(type)) {
+                this.#listeners.get(type).push(listener);
+            } else {
+                this.#listeners.set(type, [listener]);
+            }
         }
 
-        removeEventListener() {
-
+        removeEventListener(type, listener) {
+            if (this.#listeners.has(type)) {
+                const trimmed = this.#listeners.get(type).filter(f => f !== listener);
+                this.#listeners.set(type, trimmed);
+            }
         }
 
         // style {backgroundColor, cursor}
@@ -75,8 +90,6 @@
         //toDataURL
         //toBlob
     }
-
-    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
 
     class CanvasRenderingContext2D {
         #id;
@@ -160,8 +173,10 @@
     class Window {
         #id;
 
-        constructor(id) {
+        constructor(id, canvas) {
             this.#id = id;
+            this.addEventListener = canvas.addEventListener;
+            this.removeEventListener = canvas.removeEventListener;
         }
 
         #title = 'quickjs-canvas';
@@ -200,12 +215,25 @@
         }
     }
 
+    const listeners = new Map();
+
+    function subscribe(id, callback) {
+        listeners.set(id, callback);
+    }
+
+    function QJSC_Event(id, type, event) {
+        const callback = listeners.get(id);
+        requestAnimationFrame(() => {
+            callback && callback(type, event);
+        });
+    }
+
     function alert(text) {
-        QJSC_msgBox("alert", String(text || ''));
+        QJSC_msgBox('alert', String(text || ''));
     }
 
     function confirm(text) {
-        return QJSC_msgBox("confirm", String(text || ''));
+        return QJSC_msgBox('confirm', String(text || ''));
     }
 
     Object.assign(globalThis, {
@@ -219,9 +247,10 @@
         assert: (a) => { if (!a) throw new Error(a); },
         // private
         flushRAFQueue,
+        QJSC_Event,
     });
 
-    ['flushRAFQueue']
+    ['flushRAFQueue', 'QJSC_Event']
         .forEach(key => {
             Object.defineProperty(globalThis, key, {
                 enumerable: false,

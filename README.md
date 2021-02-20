@@ -14,7 +14,6 @@ cargo run --release -- --file examples/hello.js
     * improve text implementation (try orbfont)
     * arc
     * curves
-* events
 * fix window closing
 * examples: zdog, d3-force, window.moveTo breakout
 * document features
