@@ -16,11 +16,11 @@ pub fn bind_js(
     // canvas methods
 
     context.add_callback("QJSC_initCanvas", clone!(canvases =>
-        move |id: i32, width: i32, height: i32| {
+        move |width: i32, height: i32| {
             let sdl_env = sdl_env.lock().unwrap();
-            let canvas = CanvasWindow::new(&sdl_env, width as _, height as _);
+            let (id, canvas) = CanvasWindow::new(&sdl_env, width as _, height as _);
             canvases.lock().unwrap().insert(id, canvas);
-            JsValue::Null
+            id
         }
      )).unwrap();
 

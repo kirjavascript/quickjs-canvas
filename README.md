@@ -6,7 +6,7 @@ cargo run --release -- --file examples/hello.js
 
 ### development dependencies
 
-`libsdl2-dev liblzma-dev`
+`libsdl2-dev libsdl2-gfx-dev liblzma-dev`
 
 ### TODO
 
@@ -14,7 +14,6 @@ cargo run --release -- --file examples/hello.js
     * improve text implementation (try orbfont)
     * arc
     * curves
-* try out cairo instead (check node-canvas for examples)
 * events
 * fix window closing
 * examples: zdog, d3-force, window.moveTo breakout
@@ -33,7 +32,7 @@ cargo run --release -- --file examples/hello.js
 * --png
 * --embed script.js --out file.exe
 * make "bundled", "static-link" work with sdl2_gfx
-* prompt()
+* prompt() from window, with blocked bool
 * nanovg
 
 #### libs to consider

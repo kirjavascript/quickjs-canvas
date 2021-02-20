@@ -21,12 +21,14 @@ pub struct CanvasWindow {
 }
 
 impl CanvasWindow {
-    pub fn new(sdl_env: &SDLEnv, width: u32, height: u32) -> Self {
+    pub fn new(sdl_env: &SDLEnv, width: u32, height: u32) -> (i32, Self) {
         let window = sdl_env.video.window("quickjs-canvas", width, height)
             .position_centered()
             .opengl()
             .build()
             .expect("could not open SDL window");
+
+        let id = window.id() as _;
 
         let mut canvas = window
             .into_canvas()
@@ -44,7 +46,7 @@ impl CanvasWindow {
             Color::RGBA(0, 0, 0, 0),
         );
 
-        Self {
+        (id, Self {
             canvas,
             texture_creator,
             font_renderer,
@@ -54,7 +56,7 @@ impl CanvasWindow {
             fill_style: Color::RGB(0, 0, 0),
             stroke_style: Color::RGB(0, 0, 0),
             dirty: true,
-        }
+        })
     }
 
     pub fn fill_path(&mut self, path: Path) {
